@@ -10,9 +10,12 @@ export function useAuth() {
   const isAuthenticated = computed(() => !!state.currentUser)
 
   const fetchUser = async () => {
-    const { data } = await api.get('/api/user')
-    state.currentUser = data
-    state.initialized = true
+    try {
+      const { data } = await api.get('/api/user')
+      state.currentUser = data
+    } finally {
+      state.initialized = true
+    }
   }
 
   const login = async (email, password) => {

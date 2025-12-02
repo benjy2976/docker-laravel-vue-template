@@ -20,6 +20,14 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Force JSON responses for SPA clients.
+     */
+    public function wantsJson(): bool
+    {
+        return true;
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>

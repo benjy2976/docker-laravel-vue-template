@@ -38,6 +38,10 @@ router.beforeEach(async (to, from, next) => {
     return next({ name: 'login' })
   }
 
+  if (auth.isAuthenticated.value && ['login', 'register', 'forgot'].includes(to.name)) {
+    return next({ name: 'dashboard' })
+  }
+
   next()
 })
 

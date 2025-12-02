@@ -15,6 +15,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): Response
     {
+        logger()->info('login.store called', ['email' => $request->input('email')]);
+
         $request->authenticate();
 
         $request->session()->regenerate();
