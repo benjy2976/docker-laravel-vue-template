@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import { computed, onMounted, reactive } from 'vue'
+import { usePermissionStore } from '@/store/auth/permissions'
 
 const props = defineProps({
   userName: { type: String, default: 'Usuario' },
@@ -8,6 +10,32 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['settings', 'logout'])
+
+const permissionStore = usePermissionStore()
+onMounted(() => {
+  permissionStore.ensureMenusLoaded()
+})
+
+const open = reactive({})
+
+const menuTree = computed(() => {
+  const all = permissionStore.items.filter(p => p.is_menu)
+  const byParent = (parentId) =>
+    all
+      .filter(p => (p.parent_id || null) === parentId)
+      .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+
+  const roots = byParent(null)
+  roots.forEach(r => { if (open[r.id] === undefined) open[r.id] = true })
+  return roots.map(root => ({
+    ...root,
+    children: byParent(root.id),
+  }))
+})
+
+const toggle = (id) => {
+  open[id] = !open[id]
+}
 </script>
 
 <template>
@@ -16,28 +44,25 @@ const emit = defineEmits(['settings', 'logout'])
       <span class="fs-4">Sidebar</span>
     </a>
     <hr />
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <RouterLink
-          class="nav-link"
-          :class="{ active: props.currentPath === '/dashboard' }"
-          to="/dashboard"
-        >
-          Home
-        </RouterLink>
+    <ul class="list-unstyled ps-0">
+      <li v-for="menu in menuTree" :key="menu.id" class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" @click="toggle(menu.id)">
+          {{ menu.menu_label || menu.name }}
+        </button>
+        <div v-show="open[menu.id]" class="collapse show">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li v-for="child in menu.children" :key="child.id">
+              <RouterLink
+                class="link-body-emphasis d-inline-flex text-decoration-none rounded py-1 ps-4"
+                :class="{ 'fw-semibold': props.currentPath === (child.menu_path || '') }"
+                :to="child.menu_path || '#'"
+              >
+                {{ child.menu_label || child.name }}
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
       </li>
-      <li>
-        <RouterLink
-          class="nav-link"
-          :class="{ active: props.currentPath.startsWith('/projects') }"
-          to="/projects"
-        >
-          Dashboard
-        </RouterLink>
-      </li>
-      <li><a href="#" class="nav-link link-body-emphasis">Orders</a></li>
-      <li><a href="#" class="nav-link link-body-emphasis">Products</a></li>
-      <li><a href="#" class="nav-link link-body-emphasis">Customers</a></li>
     </ul>
     <hr />
     <div class="dropdown">
