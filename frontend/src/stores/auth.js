@@ -18,9 +18,9 @@ export function useAuth() {
     }
   }
 
-  const login = async (email, password) => {
+  const login = async (email, password, remember = false) => {
     await api.get('/sanctum/csrf-cookie')
-    await api.post('/login', { email, password })
+    await api.post('/login', { email, password, remember })
     await fetchUser()
   }
 

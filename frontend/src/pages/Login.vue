@@ -69,7 +69,7 @@ const submit = async () => {
   loading.value = true
   error.value = ''
   try {
-    await auth.login(email.value, password.value)
+    await auth.login(email.value, password.value, remember.value)
     router.push('/dashboard')
   } catch (e) {
     error.value = 'Credenciales inválidas'
