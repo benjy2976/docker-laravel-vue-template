@@ -1,4 +1,3 @@
-import prettier from 'eslint-config-prettier/flat';
 import vue from 'eslint-plugin-vue';
 
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
@@ -6,7 +5,6 @@ import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescri
 export default defineConfigWithVueTs(
   vue.configs['flat/essential'],
   vueTsConfigs.recommended,
-  prettier,
   {
     ignores : ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js', 'resources/js/components/ui/*'],
   },
@@ -37,6 +35,7 @@ export default defineConfigWithVueTs(
           "math" : "always"
         }
       ],
+      "vue/html-indent"                             : ["error", 2],
       // Allow script blocks without explicit lang attribute (JS/TS inferred by tooling)
       "vue/block-lang"                              : "off",
       "vue/no-mutating-props"                       : "off",
