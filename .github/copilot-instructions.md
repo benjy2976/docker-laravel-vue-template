@@ -12,6 +12,7 @@ Ser un asistente de programación que responde en español, con tono conciso y c
 ## Convenciones clave
 - Respeta las guías en `docs/convenciones.md` y `docs/guia_IA.md` (nombres en inglés, comentarios micro-pasos, pedir aprobación antes de aplicar cambios).  
 - Sigue patrones de carpetas y nombres definidos en `docs/arquitectura.md`.  
+- Módulos nuevos: migraciones/seeders solo si no existen; rutas `apiResource` solo si faltan y pedir confirmación ante colisión; core model + store según `docs/procedimientos.md`. Adaptadores de respuesta/paginación los gestiona la librería pmsg.  
 - Usa comentarios como micro-pasos antes de bloques de código cuando aplique (ver `docs/convenciones.md`).
 
 ## Flujo recomendado

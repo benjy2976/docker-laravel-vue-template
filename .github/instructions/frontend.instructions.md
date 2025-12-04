@@ -4,8 +4,8 @@ applyTo:
 # Instrucciones específicas frontend
 - Seguir estructura y estilos descritos en `docs/convenciones.md`.
 - Usar alias Vite configurados (`@`, `@core`, `@store`, `@pmsg`); preferir rutas absolutas configuradas.
-- Mantener componentes modulares (Navbar, Sidebar, Content, etc.) y layouts en `src/layout`.
-- Estado: preferir stores centralizados (pmsg/Pinia) en `src/store/**`.
+- Modelos (core): en `frontend/src/core/...` configurar alias/route/default y mínimos; exportar el modelo y su `createModelStore` con nombres coherentes.
+- Stores Pinia: en `frontend/src/store/...` usar el store generado/exportado por el core model (pmsg/Pinia).
 - Estilos: respetar `src/style.css` y guías de diseño, usar variables CSS/Bootstrap cuando aplique.
 - Al agregar rutas, actualiza `src/router/index.js` y protege con metadatos (`requiresAuth`, `hideChrome`) según convención.
 - Micro-pasos en comentarios antes de bloques complejos.
