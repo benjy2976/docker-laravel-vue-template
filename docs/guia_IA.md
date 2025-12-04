@@ -10,3 +10,4 @@
 - Si falta documentación de una regla usada, notificar y sugerir dónde agregarla.
 # sobre el analisis de reglas en la memoria
 - cuando se te solicite revisar reglas en la memoria siempre las aras una a una, y compararas las ideas nuevas tambien una a una para posicionarlas donde deben de estar y evitar redundancias
+- cuando se vaya a incluir una regla siempre se tiene que verificar coliciones con las reglas existentes y de encontrarse consultar al usuario
