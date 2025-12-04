@@ -2,7 +2,6 @@ applyTo:
   - src/**
 
 # Instrucciones específicas frontend
-- Código en español en comentarios y documentación.
 - Seguir estructura y estilos descritos en `docs/convenciones.md`.
 - Usar alias Vite configurados (`@`, `@core`, `@store`, `@pmsg`); preferir rutas absolutas configuradas.
 - Mantener componentes modulares (Navbar, Sidebar, Content, etc.) y layouts en `src/layout`.
