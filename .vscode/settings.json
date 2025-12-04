@@ -1,0 +1,9 @@
+{
+    "eslint.nodePath": "frontend/node_modules",
+    "eslint.workingDirectories": [
+
+        { "directory": "frontend", "changeProcessCWD": true }
+    ],
+    "eslint.useFlatConfig": true
+
+}
