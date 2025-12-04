@@ -28,6 +28,6 @@
 - Frontend:
   - Core model en `frontend/src/core/...` con alias/route/default y export del modelo + `createModelStore`.
   - Store Pinia en `frontend/src/store/...` reutilizando el store generado por el core model.
-  - Adaptadores de respuesta/paginación vienen desde la librería pmsg (no reimplementar aquí).
+  - Adaptadores de respuesta/paginación los gestiona la librería pmsg; solo implementar manualmente si se solicita de forma explícita y en los lugares indicados.
 
 TODO: Añadir pasos de build/preview frontend y despliegue.

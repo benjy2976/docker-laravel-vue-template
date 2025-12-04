@@ -15,9 +15,6 @@
 - Imports: preferir alias configurados en Vite (`@`, `@core`, `@store`, `@pmsg`).
 - Validación backend: usar FormRequest/validate; respuestas JSON claras.
 - Pruebas: documentar comandos en `docs/procedimientos.md`; usar datos seeders para roles/permisos.
-- Migraciones/seeders: crear solo en módulos nuevos cuando no existan; si ya están, no modificarlos salvo instrucción explícita.
-- Rutas API: usar `apiResource`; si existe una ruta previa con mismo nombre/módulo, pausar y pedir confirmación.
-- Frontend core/store: el core model exporta modelo + `createModelStore`; el store en `src/store` consume el generado por el core. Adaptadores de respuesta/paginación los provee pmsg.
 - Al proponer código o cambios:
   - Respetar estas convenciones y pedir aprobación antes de aplicarlos.
   - Incluir micro-prompts previos a cada bloque lógico.
