@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\PermissionController;
+use App\Http\Controllers\API\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,4 +13,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('permissions', PermissionController::class)->middleware('role:admin');
+    Route::apiResource('roles', RoleController::class)->middleware('role:admin');
 });
