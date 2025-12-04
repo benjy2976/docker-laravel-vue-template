@@ -1,87 +1,81 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { computed, onMounted, reactive } from 'vue'
-import { usePermissionStore } from '@/store/auth/permissions'
 
 const props = defineProps({
-  userName: { type: String, default: 'Usuario' },
-  userEmail: { type: String, default: '' },
-  currentPath: { type: String, default: '/' },
+  userName: { type: String, default: 'User' },
 })
 
-const emit = defineEmits(['settings', 'logout'])
-
-const permissionStore = usePermissionStore()
-onMounted(() => {
-  permissionStore.ensureMenusLoaded()
-})
-
-const open = reactive({})
-
-const menuTree = computed(() => {
-  const all = permissionStore.items.filter(p => p.is_menu)
-  const byParent = (parentId) =>
-    all
-      .filter(p => (p.parent_id || null) === parentId)
-      .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
-
-  const roots = byParent(null)
-  roots.forEach(r => { if (open[r.id] === undefined) open[r.id] = true })
-  return roots.map(root => ({
-    ...root,
-    children: byParent(root.id),
-  }))
-})
-
-const toggle = (id) => {
-  open[id] = !open[id]
-}
+const sections = [
+  {
+    title: 'Home',
+    children: [
+      { label: 'Overview', to: '/dashboard' },
+      { label: 'Updates', to: '/dashboard/updates' },
+      { label: 'Reports', to: '/dashboard/reports' },
+    ],
+  },
+  {
+    title: 'Dashboard',
+    children: [
+      { label: 'Overview', to: '/dashboard' },
+      { label: 'Weekly', to: '/dashboard/weekly' },
+      { label: 'Monthly', to: '/dashboard/monthly' },
+      { label: 'Annually', to: '/dashboard/annually' },
+    ],
+  },
+  {
+    title: 'Orders',
+    children: [
+      { label: 'New', to: '/orders/new' },
+      { label: 'Processed', to: '/orders/processed' },
+      { label: 'Shipped', to: '/orders/shipped' },
+      { label: 'Returned', to: '/orders/returned' },
+    ],
+  },
+]
 </script>
 
 <template>
   <aside class="flex-shrink-0 p-3 bg-body-tertiary sidebar-menu">
     <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" href="#">
-      <span class="fs-4">Sidebar</span>
+      <span class="fs-4">Collapsible</span>
     </a>
     <hr />
     <ul class="list-unstyled ps-0">
-      <li v-for="menu in menuTree" :key="menu.id" class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" @click="toggle(menu.id)">
-          {{ menu.menu_label || menu.name }}
-        </button>
-        <div v-show="open[menu.id]" class="collapse show">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li v-for="child in menu.children" :key="child.id">
-              <RouterLink
-                class="link-body-emphasis d-inline-flex text-decoration-none rounded py-1 ps-4"
-                :class="{ 'fw-semibold': props.currentPath === (child.menu_path || '') }"
-                :to="child.menu_path || '#'"
-              >
-                {{ child.menu_label || child.name }}
-              </RouterLink>
-            </li>
-          </ul>
+      <li v-for="section in sections" :key="section.title" class="mb-1">
+        <div class="fw-semibold d-flex align-items-center gap-1 mb-1">
+          <span class="small">▾</span>
+          {{ section.title }}
         </div>
+        <ul class="list-unstyled ps-3 mb-3">
+          <li v-for="item in section.children" :key="item.to">
+            <RouterLink class="d-inline-flex text-decoration-none py-1" :to="item.to">
+              {{ item.label }}
+            </RouterLink>
+          </li>
+        </ul>
       </li>
     </ul>
     <hr />
-    <div class="dropdown">
+    <div>
+      <RouterLink class="d-inline-flex text-decoration-none fw-semibold" to="/account">Account</RouterLink>
+    </div>
+    <div class="dropdown mt-auto">
       <a
         href="#"
         class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <div class="avatar-sm me-2">{{ props.userName.charAt(0).toUpperCase() }}</div>
-        <strong>{{ props.userName }}</strong>
+        <i class="bi bi-person-circle fs-4 me-2"></i>
+        <strong>{{ props.userName || 'User' }}</strong>
       </a>
       <ul class="dropdown-menu text-small shadow">
-        <li><button class="dropdown-item" @click="emit('settings')">Settings</button></li>
+        <li><a class="dropdown-item" href="#">New project...</a></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
         <li><hr class="dropdown-divider" /></li>
-        <li><button class="dropdown-item text-danger" @click="emit('logout')">Sign out</button></li>
-        <li class="dropdown-item disabled text-wrap">
-          <small class="text-muted">{{ props.userEmail }}</small>
-        </li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
       </ul>
     </div>
   </aside>
