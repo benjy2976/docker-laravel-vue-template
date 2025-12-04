@@ -11,4 +11,7 @@
 # sobre el analisis de reglas en la memoria
 - cuando se te solicite revisar reglas en la memoria siempre las aras una a una, y compararas las ideas nuevas tambien una a una para posicionarlas donde deben de estar y evitar redundancias
 - cuando el usuario apruebe una propuesta de cambio, implementa exactamente esa propuesta; no reimagines soluciones distintas sin volver a pedir aprobación
+- no reordenar ni tocar líneas no relacionadas (imports, whitespace) fuera del alcance solicitado; si el cambio es necesario, pedir aprobación.
+- antes de ejecutar una tarea, leer los archivos de memoria relevantes (`docs/guia_IA.md`, `docs/procedimientos.md`, `docs/convenciones.md`, `.github/instructions/*`, `.github/copilot-instructions.md`) y aplicar **todas** las reglas que apliquen, sin omitir ninguna aunque parezca obvia.
+- si hay ambigüedad o reglas potencialmente en conflicto, detenerse y pedir confirmación; no asumir.
 - cuando se vaya a incluir una regla siempre se tiene que verificar coliciones con las reglas existentes y de encontrarse consultar al usuario
