@@ -28,6 +28,20 @@
 - Frontend:
   - Core model en `frontend/src/core/...` con alias/route/default y export del modelo + `createModelStore`.
   - Store Pinia en `frontend/src/store/...` reutilizando el store generado por el core model.
+  - Estándar de store Pinia para modelos: `defineStore(model.alias, createModelStore())`; sin `reactive` extra ni doble alias, añadir overrides de state/getters/actions vacios para que el usuario pueda cargarlos, segun el siguient eejemplo
+  ```js
+import { defineStore } from 'pinia'
+import { Role, createRoleStore } from '@/core/auth/role'
+// Estado, getters y acciones adicionales para el store de roles
+const extraState = { /* ... */ }
+const extraGetters = { /* ... */ }
+const extraActions = { /* ... */ }
+// Store de opciones generado por el modelo usando el alias definido en el core
+export const useRoleStore = defineStore(
+  Role.alias,
+  createRoleStore(extraState, extraGetters, extraActions)
+)
+```
   - Adaptadores de respuesta/paginación los gestiona la librería pmsg; solo implementar manualmente si se solicita de forma explícita y en los lugares indicados.
 
 TODO: Añadir pasos de build/preview frontend y despliegue.
