@@ -29,7 +29,7 @@
   - Core model en `frontend/src/core/...` con alias/route/default y export del modelo + `createModelStore`.
   - Store Pinia en `frontend/src/store/...` reutilizando el store generado por el core model.
   - Estándar de store Pinia para modelos: `defineStore(model.alias, createModelStore())`; sin `reactive` extra ni doble alias, añadir overrides de state/getters/actions vacios para que el usuario pueda cargarlos, segun el siguient eejemplo
-  ```js
+```js
 import { defineStore } from 'pinia'
 import { Role, createRoleStore } from '@/core/auth/role'
 // Estado, getters y acciones adicionales para el store de roles
