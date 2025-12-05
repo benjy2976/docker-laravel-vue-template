@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import api from '../axios'
+import api from '@/axios'
 
 const email = ref('')
 const loading = ref(false)

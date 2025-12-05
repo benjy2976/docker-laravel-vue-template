@@ -1,7 +1,7 @@
-import Login from '../pages/Login.vue'
-import Register from '../pages/Register.vue'
-import ForgotPassword from '../pages/ForgotPassword.vue'
-import ResetPassword from '../pages/ResetPassword.vue'
+import Login from '@/pages/Login.vue'
+import Register from '@/pages/Register.vue'
+import ForgotPassword from '@/pages/ForgotPassword.vue'
+import ResetPassword from '@/pages/ResetPassword.vue'
 
 export const authRoutes = [
   {

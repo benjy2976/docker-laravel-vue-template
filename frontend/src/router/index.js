@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { authRoutes } from './auth.js'
 import { adminRoutes } from './admin/index.js'
-import Dashboard from '../pages/Dashboard.vue'
-import ProjectsIndex from '../pages/ProjectsIndex.vue'
-import ProjectsForm from '../pages/ProjectsForm.vue'
+import Dashboard from '@/pages/Dashboard.vue'
+import ProjectsIndex from '@/pages/ProjectsIndex.vue'
+import ProjectsForm from '@/pages/ProjectsForm.vue'
 import { useAuth } from '@stores/auth.js'
 
 const routes = [

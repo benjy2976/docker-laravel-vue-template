@@ -12,7 +12,8 @@
   // Paso 3: devolver respuesta
   ```
 - Estilos: usar clases Bootstrap y variables; evitar inline salvo prototipos rápidos.
-- Imports: preferir alias configurados en Vite (`@`, `@core`, `@store`, `@pmsg`).
+- Imports: preferir alias configurados en Vite (`@`, `@core`, `@stores`, `@pmsg`); evita rutas relativas (`../`) al agregar módulos o componentes en `src`.
+- Estan permitidas las importaciones que tengan (`./`) por que representan a archivos en el mismo directorio
 - Validación backend: usar FormRequest/validate; respuestas JSON claras.
 - Pruebas: documentar comandos en `docs/procedimientos.md`; usar datos seeders para roles/permisos.
 - Al proponer código o cambios:

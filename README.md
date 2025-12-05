@@ -8,6 +8,7 @@ Esta memoria centraliza decisiones, convenciones y procedimientos para colaborar
 - `src/frontend` y `src/backend`: README de cada módulo.
 
 ## Uso
+- Lee `docs/guia_IA.md` antes de cualquier tarea (reglas para la IA).
 - Lee `docs/arquitectura.md` y `docs/entorno.md` antes de cambiar código.
 - Sigue `docs/convenciones.md` y `docs/procedimientos.md` en el día a día.
 - Para tareas comunes, consulta los prompts en `.github/prompts/`.

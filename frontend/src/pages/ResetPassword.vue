@@ -54,7 +54,7 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import api from '../axios'
+import api from '@/axios'
 
 const route = useRoute()
 const router = useRouter()
