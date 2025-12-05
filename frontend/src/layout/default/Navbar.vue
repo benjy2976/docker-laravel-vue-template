@@ -3,28 +3,89 @@ const emit = defineEmits(['settings', 'logout'])
 </script>
 
 <template>
-  <header class="navbar sticky-top bg-body-tertiary flex-md-nowrap p-0 shadow">
-    <span class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6">Company name</span>
-    <button
-      class="navbar-toggler position-absolute d-md-none collapsed"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#sidebarMenu"
-      aria-controls="sidebarMenu"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <input
-      class="form-control form-control-light w-100 rounded-0 border-0"
-      type="text"
-      placeholder="Search"
-      aria-label="Search"
-    />
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <div class="d-flex align-items-center">
+      <ul class="navbar-nav flex-row d-md-none mb-0">
+        <button
+          class="nav-link px-3 text-white"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#sidebarMenu"
+          aria-controls="sidebarMenu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </ul>
+      <a class="navbar-brand me-0 px-2 fs-6 text-white" href="#">Company name</a>
+    </div>
     <div class="navbar-nav flex-row d-none d-md-flex px-3">
       <button class="btn btn-outline-secondary btn-sm me-2" @click="emit('settings')">Settings</button>
       <button class="btn btn-danger btn-sm" @click="emit('logout')">Sign out</button>
     </div>
+    <ul class="navbar-nav flex-row d-md-none">
+      <li class="nav-item text-nowrap">
+        <button
+          class="nav-link px-3 text-white d-flex align-items-center"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSearch"
+          aria-controls="navbarSearch"
+          aria-expanded="false"
+          aria-label="Toggle search"
+        >
+          <i class="bi bi-search fs-5"></i>
+        </button>
+      </li>
+    </ul>
+    <ul class="navbar-nav flex-row ms-auto align-items-center gap-2">
+      <li class="nav-item">
+        <button class="btn nav-link pe-3 text-white position-relative" type="button" aria-label="Notificaciones">
+          <i class="bi bi-bell fs-5"></i>
+          <span class="badge-counter">3+</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link pe-3 text-white position-relative" type="button" aria-label="Mensajes">
+          <i class="bi bi-envelope fs-5"></i>
+          <span class="badge-counter">7</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link pe-3 text-white" type="button" aria-label="Perfil">
+          <i class="bi bi-person-circle fs-4"></i>
+        </button>
+      </li>
+    </ul>
+    <div id="navbarSearch" class="navbar-search w-100 collapse">
+      <input
+        class="form-control w-100 rounded-0 border-0"
+        type="text"
+        placeholder="Search"
+        aria-label="Search"
+      />
+    </div>
   </header>
 </template>
+<style scoped>
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.badge-counter {
+  position: absolute;
+  top: 13px;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  padding: 2px 5px;
+  font-size: 0.65rem;
+  line-height: 1;
+  border-radius: 999px;
+  background-color: var(--bs-danger);
+  color: #fff;
+}
+</style>
