@@ -52,10 +52,23 @@ const emit = defineEmits(['settings', 'logout'])
           <span class="badge-counter">7</span>
         </button>
       </li>
-      <li class="nav-item">
-        <button class="nav-link pe-3 text-white" type="button" aria-label="Perfil">
+      <li class="nav-item dropdown profile-dropdown">
+        <button
+          class="nav-link pe-3 text-white"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          aria-label="Perfil"
+        >
           <i class="bi bi-person-circle fs-4"></i>
         </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
       </li>
     </ul>
     <div id="navbarSearch" class="navbar-search w-100 collapse">
@@ -87,5 +100,16 @@ const emit = defineEmits(['settings', 'logout'])
   border-radius: 999px;
   background-color: var(--bs-danger);
   color: #fff;
+}
+
+.profile-dropdown {
+  position: relative;
+}
+.profile-dropdown .dropdown-menu {
+  position: absolute;
+  inset: auto 0 auto auto;
+  transform: none !important;
+  margin-top: .5rem;
+  z-index: 1080;
 }
 </style>

@@ -8,6 +8,7 @@ const props = defineProps({
 const sections = [
   {
     title    : "Home",
+    icon     : "bi-house-door",
     children : [
       { label: "Dashboard", to: "/dashboard" },
       { label: "Updates", to: "/dashboard/updates" },
@@ -16,6 +17,7 @@ const sections = [
   },
   {
     title    : "Orders",
+    icon     : "bi-bag-check",
     children : [
       { label: "New", to: "/orders/new" },
       { label: "Processed", to: "/orders/processed" },
@@ -27,11 +29,12 @@ const sections = [
 </script>
 
 <template>
-  <div class="sidebar border border-right col-md-3 col-lg-2 py-0 pe-0 bg-body-tertiary">
+  <div class="sidebar border border-right col-md-3 col-lg-2 py-0">
     
     <div
-      class="offcanvas-md offcanvas-end bg-body-tertiary"
+      class="offcanvas-md offcanvas-end"
       tabindex="-1"
+      data-bs-scroll="true"
       id="sidebarMenu"
       aria-labelledby="sidebarMenuLabel"
     >
@@ -47,7 +50,7 @@ const sections = [
       </div>
       <div class="offcanvas-body p-0">
               
-        <ul class="list-unstyled ps-0">
+        <ul class="list-unstyled ps-0 w-100">
           <li v-for="(section, i) in sections" :key="section.title" class="mb-1">
             <button
               class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -55,6 +58,7 @@ const sections = [
               :data-bs-target="`#${section.title.toLowerCase() }-${i}-collapse`"
               aria-expanded="false"
             >
+              <i :class="['bi', section.icon, 'me-2']" aria-hidden="true"></i>
               {{ section.title }}
             </button>
             <div class="collapse" :id="`${section.title.toLowerCase() }-${i}-collapse`">
@@ -70,6 +74,7 @@ const sections = [
               </ul>
             </div>
           </li>
+          <hr />
           <li>
             <div class="dropdown mt-auto">
               <a
@@ -99,6 +104,29 @@ const sections = [
 </template>
 
 <style scoped>
+.btn-toggle-nav a {
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.25rem;
+}
+.btn-toggle {
+    padding: .25rem .25rem;
+    font-weight: 600;
+    color: var(--bs-emphasis-color);
+    background-color: transparent;
+}
+.btn-toggle::before {
+    order: 2;
+    margin-left: auto;
+}
 
+@media (min-width: 768px) {
+  .sidebar {
+      position: sticky;
+      top: 51px; /* altura aproximada del navbar */
+      height: calc(100vh - 51px);
+      overflow-y: auto;
+  }
+}
 
 </style>
