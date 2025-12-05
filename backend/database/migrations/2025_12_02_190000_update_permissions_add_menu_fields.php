@@ -8,6 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('permissions', function (Blueprint $table) {
+            $table->string('description')->nullable()->after('name');
             $table->boolean('is_menu')->default(false)->after('guard_name');
             $table->string('menu_label')->nullable()->after('is_menu');
             $table->string('menu_path')->nullable()->after('menu_label');
@@ -26,7 +27,7 @@ return new class extends Migration {
     {
         Schema::table('permissions', function (Blueprint $table) {
             $table->dropForeign(['parent_id']);
-            $table->dropColumn(['is_menu', 'menu_label', 'menu_path', 'icon', 'parent_id', 'sort_order']);
+            $table->dropColumn(['description', 'is_menu', 'menu_label', 'menu_path', 'icon', 'parent_id', 'sort_order']);
         });
     }
 };

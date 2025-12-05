@@ -32,6 +32,7 @@ class PermissionController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:permissions,name'],
             'guard_name' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'is_menu' => ['sometimes', 'boolean'],
             'menu_label' => ['nullable', 'string', 'max:255'],
             'menu_path' => ['nullable', 'string', 'max:255'],
@@ -59,6 +60,7 @@ class PermissionController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:permissions,name,' . $permission->id],
             'guard_name' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'is_menu' => ['sometimes', 'boolean'],
             'menu_label' => ['nullable', 'string', 'max:255'],
             'menu_path' => ['nullable', 'string', 'max:255'],

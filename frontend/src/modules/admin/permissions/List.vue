@@ -12,6 +12,7 @@ const { list } = storeToRefs(permissionStore)
       <thead>
         <tr>
           <th scope="col">Name</th>
+          <th scope="col">Description</th>
           <th scope="col">Label</th>
           <th scope="col">Path</th>
           <th scope="col" class="text-end">Actions</th>
@@ -20,6 +21,7 @@ const { list } = storeToRefs(permissionStore)
       <tbody>
         <tr v-for="permission in list" :key="permission.id">
           <td>{{ permission.name }}</td>
+          <td>{{ permission.description || '—' }}</td>
           <td>{{ permission.menu_label || '—' }}</td>
           <td>{{ permission.menu_path || '—' }}</td>
           <td class="text-end">

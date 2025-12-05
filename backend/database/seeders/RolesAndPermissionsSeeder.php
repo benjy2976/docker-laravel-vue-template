@@ -12,18 +12,18 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         $roles = ['admin', 'user'];
         $permissions = [
-            'projects.view',
-            'projects.create',
-            'projects.edit',
-            'projects.delete',
-            'permissions.view',
-            'permissions.create',
-            'permissions.edit',
-            'permissions.delete',
-            'roles.view',
-            'roles.create',
-            'roles.edit',
-            'roles.delete',
+            ['name' => 'projects.view', 'description' => 'Ver proyectos'],
+            ['name' => 'projects.create', 'description' => 'Crear proyectos'],
+            ['name' => 'projects.edit', 'description' => 'Editar proyectos'],
+            ['name' => 'projects.delete', 'description' => 'Eliminar proyectos'],
+            ['name' => 'permissions.view', 'description' => 'Ver permisos'],
+            ['name' => 'permissions.create', 'description' => 'Crear permisos'],
+            ['name' => 'permissions.edit', 'description' => 'Editar permisos'],
+            ['name' => 'permissions.delete', 'description' => 'Eliminar permisos'],
+            ['name' => 'roles.view', 'description' => 'Ver roles'],
+            ['name' => 'roles.create', 'description' => 'Crear roles'],
+            ['name' => 'roles.edit', 'description' => 'Editar roles'],
+            ['name' => 'roles.delete', 'description' => 'Eliminar roles'],
         ];
 
         // Menú de Administración y sus entradas
@@ -36,6 +36,7 @@ class RolesAndPermissionsSeeder extends Seeder
                     'menu_path'   => '/admin',
                     'icon'        => 'bi-gear',
                     'sort_order'  => 10,
+                    'description' => 'Entrada de menú: Administración',
                 ],
                 'children' => [
                     [
@@ -46,6 +47,7 @@ class RolesAndPermissionsSeeder extends Seeder
                             'menu_path'   => '/permissions',
                             'icon'        => 'bi-shield-lock',
                             'sort_order'  => 1,
+                            'description' => 'Entrada de menú: Permisos',
                         ],
                     ],
                     [
@@ -56,6 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
                             'menu_path'   => '/roles',
                             'icon'        => 'bi-people',
                             'sort_order'  => 2,
+                            'description' => 'Entrada de menú: Roles',
                         ],
                     ],
                 ],
@@ -66,8 +69,14 @@ class RolesAndPermissionsSeeder extends Seeder
             Role::firstOrCreate(['name' => $roleName]);
         }
 
-        foreach ($permissions as $permissionName) {
-            Permission::firstOrCreate(['name' => $permissionName]);
+        $permissionNames = [];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission['name']],
+                ['guard_name' => 'web', 'description' => $permission['description']]
+            );
+            $permissionNames[] = $permission['name'];
         }
 
         // Crear menú y subentradas (usando la tabla permissions)
@@ -99,7 +108,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         if ($admin) {
             $admin->syncPermissions(array_merge(
-                $permissions,
+                $permissionNames,
                 $menuPermissionNames
             ));
         }
