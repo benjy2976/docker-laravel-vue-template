@@ -6,7 +6,7 @@ import ResetPassword from '../pages/ResetPassword.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import ProjectsIndex from '../pages/ProjectsIndex.vue'
 import ProjectsForm from '../pages/ProjectsForm.vue'
-import { useAuth } from '../stores/auth'
+import { useAuth } from '@stores/auth/index.js'
 
 const routes = [
   { path: '/login', name: 'login', component: Login, meta: { hideChrome: true } },
@@ -14,15 +14,15 @@ const routes = [
   { path: '/forgot-password', name: 'forgot', component: ForgotPassword, meta: { hideChrome: true } },
   { path: '/password-reset/:token', name: 'password-reset', component: ResetPassword, meta: { hideChrome: true }, props: true },
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
-    { path: '/projects', name: 'projects.index', component: ProjectsIndex, meta: { requiresAuth: true } },
-    { path: '/projects/create', name: 'projects.create', component: ProjectsForm, meta: { requiresAuth: true } },
-    { path: '/projects/:id/edit', name: 'projects.edit', component: ProjectsForm, props: true, meta: { requiresAuth: true } },
-    { path: '/:pathMatch(.*)*', redirect: '/login' },
+  { path: '/projects', name: 'projects.index', component: ProjectsIndex, meta: { requiresAuth: true } },
+  { path: '/projects/create', name: 'projects.create', component: ProjectsForm, meta: { requiresAuth: true } },
+  { path: '/projects/:id/edit', name: 'projects.edit', component: ProjectsForm, props: true, meta: { requiresAuth: true } },
+  { path: '/:pathMatch(.*)*', redirect: '/login' },
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history : createWebHistory(),
+  routes,
 })
 
 router.beforeEach(async (to, from, next) => {

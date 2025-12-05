@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, watchEffect, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useAuth } from './stores/auth'
+import { useAuth } from '@stores/auth/index.js'
 import DefaultLayout from './layout/default/index.vue'
 
 const route = useRoute()

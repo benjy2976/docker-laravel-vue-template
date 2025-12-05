@@ -1,11 +1,13 @@
 <script setup>
+import { computed } from "vue";
 import { RouterLink } from "vue-router";
+import { useAuth } from "@stores/auth/index.js";
 
 const props = defineProps({
   userName : { type: String, default: "User" }
 });
 
-const sections = [
+const baseSections = [
   {
     title    : "Home",
     icon     : "bi-house-door",
@@ -26,6 +28,9 @@ const sections = [
     ]
   }
 ];
+
+const auth = useAuth();
+const sections = computed(() => [...baseSections, ...(auth.menuSections || [])]);
 </script>
 
 <template>
@@ -68,6 +73,7 @@ const sections = [
                     class="link-body-emphasis d-inline-flex text-decoration-none rounded"
                     :to="item.to"
                   >
+                    <i v-if="item.icon" :class="['bi', item.icon, 'me-2']" aria-hidden="true"></i>
                     {{ item.label }}
                   </RouterLink>
                 </li>
