@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { RouterLink } from "vue-router";
-import { useAuth } from "@stores/auth/index.js";
+import { RouterLink, useRoute } from "vue-router";
+import { useAuth } from "@stores/auth.js";
 
 const props = defineProps({
   userName : { type: String, default: "User" }
@@ -30,7 +30,13 @@ const baseSections = [
 ];
 
 const auth = useAuth();
+const route = useRoute();
 const sections = computed(() => [...baseSections, ...(auth.menuSections || [])]);
+
+const isSectionOpen = (section) => {
+  const children = section.children || [];
+  return children.some((child) => route.path.startsWith(child.to));
+};
 </script>
 
 <template>
@@ -58,15 +64,19 @@ const sections = computed(() => [...baseSections, ...(auth.menuSections || [])])
         <ul class="list-unstyled ps-0 w-100">
           <li v-for="(section, i) in sections" :key="section.title" class="mb-1">
             <button
-              class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+              class="btn btn-toggle d-inline-flex align-items-center rounded border-0"
+              :class="{ collapsed: !isSectionOpen(section) }"
               data-bs-toggle="collapse"
               :data-bs-target="`#${section.title.toLowerCase() }-${i}-collapse`"
-              aria-expanded="false"
+              :aria-expanded="isSectionOpen(section)"
             >
               <i :class="['bi', section.icon, 'me-2']" aria-hidden="true"></i>
               {{ section.title }}
             </button>
-            <div class="collapse" :id="`${section.title.toLowerCase() }-${i}-collapse`">
+            <div
+              :class="['collapse', { show: isSectionOpen(section) }]"
+              :id="`${section.title.toLowerCase() }-${i}-collapse`"
+            >
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li v-for="item in section.children" :key="item.to">
                   <RouterLink
@@ -80,12 +90,12 @@ const sections = computed(() => [...baseSections, ...(auth.menuSections || [])])
               </ul>
             </div>
           </li>
-          <hr />
+          <hr class="my-0"/>
           <li>
             <div class="dropdown mt-auto">
               <a
                 href="#"
-                class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle px-1"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
@@ -121,9 +131,24 @@ const sections = computed(() => [...baseSections, ...(auth.menuSections || [])])
     color: var(--bs-emphasis-color);
     background-color: transparent;
 }
+
+.btn-toggle-nav a.router-link-active,
+.btn-toggle-nav a.router-link-exact-active {
+    font-weight: 600;
+    color: var(--bs-primary) !important;
+}
 .btn-toggle::before {
     order: 2;
     margin-left: auto;
+}
+.btn-toggle:hover,
+.btn-toggle:focus {
+  color: rgba(var(--bs-emphasis-color-rgb), .85);
+  background-color: var(--bs-tertiary-bg);
+}
+.btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+  background-color: var(--bs-tertiary-bg);
 }
 
 @media (min-width: 768px) {

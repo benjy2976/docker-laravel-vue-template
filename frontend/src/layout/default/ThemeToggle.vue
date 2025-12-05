@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  theme: { type: String, default: 'auto' },
+  theme : { type: String, default: 'auto' },
 })
 
 const emit = defineEmits(['change-theme'])

@@ -1,23 +1,41 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../pages/Login.vue'
-import Register from '../pages/Register.vue'
-import ForgotPassword from '../pages/ForgotPassword.vue'
-import ResetPassword from '../pages/ResetPassword.vue'
+import { authRoutes } from './auth.js'
+import { adminRoutes } from './admin/index.js'
 import Dashboard from '../pages/Dashboard.vue'
 import ProjectsIndex from '../pages/ProjectsIndex.vue'
 import ProjectsForm from '../pages/ProjectsForm.vue'
-import { useAuth } from '@stores/auth/index.js'
+import { useAuth } from '@stores/auth.js'
 
 const routes = [
-  { path: '/login', name: 'login', component: Login, meta: { hideChrome: true } },
-  { path: '/register', name: 'register', component: Register, meta: { hideChrome: true } },
-  { path: '/forgot-password', name: 'forgot', component: ForgotPassword, meta: { hideChrome: true } },
-  { path: '/password-reset/:token', name: 'password-reset', component: ResetPassword, meta: { hideChrome: true }, props: true },
-  { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/projects', name: 'projects.index', component: ProjectsIndex, meta: { requiresAuth: true } },
-  { path: '/projects/create', name: 'projects.create', component: ProjectsForm, meta: { requiresAuth: true } },
-  { path: '/projects/:id/edit', name: 'projects.edit', component: ProjectsForm, props: true, meta: { requiresAuth: true } },
-  { path: '/:pathMatch(.*)*', redirect: '/login' },
+  ...authRoutes,
+  ...adminRoutes,
+  { 
+    path      : '/dashboard', 
+    name      : 'dashboard', 
+    component : Dashboard,
+    meta      : { requiresAuth: true } 
+  },
+  { 
+    path      : '/projects', 
+    name      : 'projects.index', 
+    component : ProjectsIndex,
+    meta      : { requiresAuth: true } 
+  },
+  { 
+    path      : '/projects/create', 
+    name      : 'projects.create',
+    component : ProjectsForm,
+    meta      : { requiresAuth: true }
+  },
+  { 
+    path      : '/projects/:id/edit',
+    name      : 'projects.edit',
+    component : ProjectsForm,
+    props     : true,
+    meta      : { requiresAuth: true } 
+  },
+  { 
+    path : '/:pathMatch(.*)*', redirect : '/login' },
 ]
 
 const router = createRouter({
@@ -32,6 +50,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       await auth.fetchUser()
     } catch (e) {
+      console.error('Error fetching user during route guard:', e)
       // ignore
     }
   }

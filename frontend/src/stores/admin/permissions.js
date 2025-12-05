@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Permission, createPermissionStore } from '@/core/auth/permission'
+import { Permission, createPermissionStore } from '@/core/admin/permission'
 
 // Estado, getters y acciones adicionales para el store de permisos
 const extraState = { /* ... */ }

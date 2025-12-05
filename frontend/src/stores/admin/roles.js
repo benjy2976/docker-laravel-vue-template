@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Role, createRoleStore } from '@/core/auth/role'
+import { Role, createRoleStore } from '@/core/admin/role'
 
 // Estado, getters y acciones adicionales para el store de roles
 const extraState = { /* ... */ }

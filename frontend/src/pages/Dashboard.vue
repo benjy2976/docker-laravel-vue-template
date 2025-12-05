@@ -103,7 +103,7 @@
 
 <script setup>
 import { computed, onMounted } from 'vue'
-import { useAuth } from '@stores/auth/index.js'
+import { useAuth } from '@stores/auth.js'
 
 const auth = useAuth()
 

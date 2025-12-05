@@ -6,13 +6,13 @@ function getCookie(name) {
 }
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: true,
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-  headers: {
-    'X  ': 'XMLHttpRequest',
-    Accept: 'application/json',
+  baseURL         : import.meta.env.VITE_BACKEND_URL,
+  withCredentials : true,
+  xsrfCookieName  : 'XSRF-TOKEN',
+  xsrfHeaderName  : 'X-XSRF-TOKEN',
+  headers         : {
+    'X  '  : 'XMLHttpRequest',
+    Accept : 'application/json',
   },
 })
 

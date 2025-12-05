@@ -60,10 +60,10 @@ const route = useRoute()
 const router = useRouter()
 
 const form = reactive({
-  token: route.params.token || '',
-  email: route.query.email || '',
-  password: '',
-  password_confirmation: '',
+  token                 : route.params.token || '',
+  email                 : route.query.email || '',
+  password              : '',
+  password_confirmation : '',
 })
 
 const loading = ref(false)
