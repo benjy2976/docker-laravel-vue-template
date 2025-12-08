@@ -4,6 +4,8 @@ import { adminRoutes } from './admin/index.js'
 import Dashboard from '@/pages/Dashboard.vue'
 import ProjectsIndex from '@/pages/ProjectsIndex.vue'
 import ProjectsForm from '@/pages/ProjectsForm.vue'
+import SettingsProfile from '@/pages/settings/Profile.vue'
+import SettingsPassword from '@/pages/settings/Password.vue'
 import { useAuth } from '@stores/auth.js'
 
 const routes = [
@@ -33,6 +35,18 @@ const routes = [
     component : ProjectsForm,
     props     : true,
     meta      : { requiresAuth: true } 
+  },
+  {
+    path      : '/settings/profile',
+    name      : 'settings.profile',
+    component : SettingsProfile,
+    meta      : { requiresAuth: true }
+  },
+  {
+    path      : '/settings/password',
+    name      : 'settings.password',
+    component : SettingsPassword,
+    meta      : { requiresAuth: true }
   },
   { 
     path : '/:pathMatch(.*)*', redirect : '/login' },

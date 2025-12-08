@@ -14,7 +14,7 @@ const userEmail = computed(() => auth.user?.email ?? '')
 const currentPath = computed(() => route.path)
 
 const goSettings = () => {
-  alert('Settings no implementado aún')
+  router.push({ name: 'settings.profile' })
 }
 const handleLogout = async () => {
   await auth.logout()
