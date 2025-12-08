@@ -74,9 +74,19 @@ onBeforeUnmount(() => {
           <i class="bi bi-person-circle fs-4"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#" @click.stop.prevent="emit('settings')">Configuración</a></li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center gap-2" href="#" @click.stop.prevent="emit('settings')">
+              <i class="bi bi-gear" aria-hidden="true"></i>
+              <span>Configuración</span>
+            </a>
+          </li>
           <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#" @click.stop.prevent="emit('logout')">Cerrar Session</a></li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center gap-2" href="#" @click.stop.prevent="emit('logout')">
+              <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+              <span>Cerrar sesión</span>
+            </a>
+          </li>
         </ul>
       </li>
     </ul>
