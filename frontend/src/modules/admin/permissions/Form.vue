@@ -3,34 +3,51 @@ import { ref, onMounted, onBeforeUnmount, defineExpose } from 'vue'
 import { Modal } from 'bootstrap'
 import { Permission } from '@core/admin/permission'
 import { usePermissionStore } from '@stores/admin/permissions'
+import { useToast } from '@/shared/toast'
 
 const modalEl = ref(null)
 let modalInstance = null
 const permissionStore = usePermissionStore()
 let hideListener = null
+const toast = useToast()
 
 const defaultPermission = () => Permission.getDefault()
 const form = ref(defaultPermission())
 const mode = ref('create') // 'create' | 'edit'
+const errors = ref({})
 
 const submit = async () => {
-  if (mode.value === 'edit') {
-    await permissionStore.update(form.value)
-  } else {
-    await permissionStore.create(form.value)
+  errors.value = {}
+  try {
+    if (mode.value === 'edit') {
+      await permissionStore.update(form.value)
+      toast.success('Permiso actualizado')
+    } else {
+      await permissionStore.create(form.value)
+      toast.success('Permiso creado')
+    }
+    close()
+  } catch (err) {
+    const data = err?.response?.data
+    if (err?.response?.status === 422 && data?.errors) {
+      errors.value = data.errors
+    } else {
+      toast.danger('No se pudo guardar el permiso')
+    }
   }
-  close()
 }
 
 const openCreate = () => {
   mode.value = 'create'
   form.value = defaultPermission()
+  errors.value = {}
   modalInstance?.show()
 }
 
 const openEdit = (permission) => {
   mode.value = 'edit'
   form.value = { ...defaultPermission(), ...permission }
+  errors.value = {}
   modalInstance?.show()
 }
 
@@ -89,8 +106,10 @@ onBeforeUnmount(() => {
                   v-model="form.name"
                   type="text"
                   class="form-control"
+                  :class="{ 'is-invalid': errors.name }"
                   placeholder="permissions.view"
                 />
+                <div v-if="errors.name" class="text-danger small mt-1">{{ errors.name[0] }}</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold" for="permissionLabel">Label</label>
@@ -99,8 +118,10 @@ onBeforeUnmount(() => {
                   v-model="form.menu_label"
                   type="text"
                   class="form-control"
+                  :class="{ 'is-invalid': errors.menu_label }"
                   placeholder="Permisos"
                 />
+                <div v-if="errors.menu_label" class="text-danger small mt-1">{{ errors.menu_label[0] }}</div>
               </div>
               <div class="col-12">
                 <label class="form-label fw-semibold" for="permissionDescription">Description</label>
@@ -109,8 +130,10 @@ onBeforeUnmount(() => {
                   v-model="form.description"
                   rows="2"
                   class="form-control"
+                  :class="{ 'is-invalid': errors.description }"
                   placeholder="Descripción del permiso"
                 ></textarea>
+                <div v-if="errors.description" class="text-danger small mt-1">{{ errors.description[0] }}</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold" for="permissionPath">Path</label>
@@ -119,8 +142,10 @@ onBeforeUnmount(() => {
                   v-model="form.menu_path"
                   type="text"
                   class="form-control"
+                  :class="{ 'is-invalid': errors.menu_path }"
                   placeholder="/permissions"
                 />
+                <div v-if="errors.menu_path" class="text-danger small mt-1">{{ errors.menu_path[0] }}</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold" for="permissionIcon">Icon</label>
@@ -129,8 +154,10 @@ onBeforeUnmount(() => {
                   v-model="form.icon"
                   type="text"
                   class="form-control"
+                  :class="{ 'is-invalid': errors.icon }"
                   placeholder="bi-shield-lock"
                 />
+                <div v-if="errors.icon" class="text-danger small mt-1">{{ errors.icon[0] }}</div>
               </div>
             </div>
             <div class="mt-3 d-flex gap-2">

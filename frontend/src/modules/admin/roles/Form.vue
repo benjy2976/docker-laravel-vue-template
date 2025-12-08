@@ -4,31 +4,47 @@ import { Modal } from 'bootstrap'
 import { Role } from '@core/admin/role'
 import { useRoleStore } from '@stores/admin/roles'
 import { usePermissionStore } from '@stores/admin/permissions'
+import { useToast } from '@/shared/toast'
 
 const modalEl = ref(null)
 let modalInstance = null
 let hideListener = null
 const roleStore = useRoleStore()
 const permissionStore = usePermissionStore()
+const toast = useToast()
 
 const defaultRole = () => Role.getDefault()
 const form = ref({ ...defaultRole(), permissions: [] })
 const mode = ref('create') // 'create' | 'edit'
 const selectedAvailable = ref([])
 const selectedAssigned = ref([])
+const errors = ref({})
 
 const submit = async () => {
-  if (mode.value === 'edit') {
-    await roleStore.update(form.value)
-  } else {
-    await roleStore.create(form.value)
+  errors.value = {}
+  try {
+    if (mode.value === 'edit') {
+      await roleStore.update(form.value)
+      toast.success('Rol actualizado')
+    } else {
+      await roleStore.create(form.value)
+      toast.success('Rol creado')
+    }
+    close()
+  } catch (err) {
+    const data = err?.response?.data
+    if (err?.response?.status === 422 && data?.errors) {
+      errors.value = data.errors
+    } else {
+      toast.danger('No se pudo guardar el rol')
+    }
   }
-  close()
 }
 
 const openCreate = () => {
   mode.value = 'create'
   form.value = { ...defaultRole(), permissions: [] }
+  errors.value = {}
   selectedAvailable.value = []
   selectedAssigned.value = []
   modalInstance?.show()
@@ -38,6 +54,7 @@ const openEdit = (role) => {
   mode.value = 'edit'
   const permIds = (role.permissions || []).map(p => p.id)
   form.value = { ...defaultRole(), ...role, permissions: permIds }
+  errors.value = {}
   selectedAvailable.value = []
   selectedAssigned.value = []
   modalInstance?.show()
@@ -122,8 +139,12 @@ onBeforeUnmount(() => {
                   v-model="form.name"
                   type="text"
                   class="form-control"
+                  :class="{ 'is-invalid': errors.name }"
                   placeholder="admin"
                 />
+                <div v-if="errors.name" class="text-danger small mt-1">
+                  {{ errors.name[0] }}
+                </div>
               </div>
               <div class="col-12">
                 <label class="form-label fw-semibold">Permissions</label>
@@ -169,6 +190,9 @@ onBeforeUnmount(() => {
                         {{ perm.name }}
                       </option>
                     </select>
+                    <div v-if="errors.permissions" class="text-danger small mt-1">
+                      {{ errors.permissions[0] }}
+                    </div>
                   </div>
                 </div>
               </div>
