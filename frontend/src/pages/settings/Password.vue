@@ -1,7 +1,26 @@
 <script setup>
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useAuth } from '@stores/auth'
+
+const auth = useAuth()
+const form = ref({
+  current_password      : '',
+  password              : '',
+  password_confirmation : '',
+})
 
 const notifyUnsupported = () => window.alert('Not implemented yet')
+
+const onSubmit = async () => {
+  await auth.updatePassword(form.value)
+  window.alert('Password updated')
+  form.value = {
+    current_password      : '',
+    password              : '',
+    password_confirmation : '',
+  }
+}
 </script>
 
 <template>
@@ -21,18 +40,36 @@ const notifyUnsupported = () => window.alert('Not implemented yet')
         <section>
           <h2 class="h4">Update password</h2>
           <p class="text-muted">Ensure your account is using a long, random password to stay secure</p>
-          <form class="card card-body shadow-sm border-0" @submit.prevent>
+          <form class="card card-body shadow-sm border-0" @submit.prevent="onSubmit">
             <div class="mb-3">
               <label class="form-label fw-semibold" for="currentPassword">Current password</label>
-              <input id="currentPassword" type="password" class="form-control" placeholder="Current password" />
+              <input
+                id="currentPassword"
+                v-model="form.current_password"
+                type="password"
+                class="form-control"
+                placeholder="Current password"
+              />
             </div>
             <div class="mb-3">
               <label class="form-label fw-semibold" for="newPassword">New password</label>
-              <input id="newPassword" type="password" class="form-control" placeholder="New password" />
+              <input
+                id="newPassword"
+                v-model="form.password"
+                type="password"
+                class="form-control"
+                placeholder="New password"
+              />
             </div>
             <div class="mb-3">
               <label class="form-label fw-semibold" for="confirmPassword">Confirm password</label>
-              <input id="confirmPassword" type="password" class="form-control" placeholder="Confirm password" />
+              <input
+                id="confirmPassword"
+                v-model="form.password_confirmation"
+                type="password"
+                class="form-control"
+                placeholder="Confirm password"
+              />
             </div>
             <button type="submit" class="btn btn-primary">Save password</button>
           </form>

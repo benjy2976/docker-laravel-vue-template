@@ -1,13 +1,31 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '@stores/auth'
 
 const auth = useAuth()
-const userName = computed(() => auth.user?.name || '')
-const userEmail = computed(() => auth.user?.email || '')
+const form = ref({
+  name  : '',
+  email : '',
+})
+
+watch(
+  () => auth.user,
+  (user) => {
+    if (user) {
+      form.value.name = user.name || ''
+      form.value.email = user.email || ''
+    }
+  },
+  { immediate: true }
+)
 
 const notifyUnsupported = () => window.alert('Not implemented yet')
+
+const onSubmit = async () => {
+  await auth.updateProfile(form.value)
+  window.alert('Profile updated')
+}
 </script>
 
 <template>
@@ -27,7 +45,7 @@ const notifyUnsupported = () => window.alert('Not implemented yet')
         <section class="mb-4">
           <h2 class="h4">Profile information</h2>
           <p class="text-muted">Update your name and email address</p>
-          <form class="card card-body shadow-sm border-0" @submit.prevent>
+          <form class="card card-body shadow-sm border-0" @submit.prevent="onSubmit">
             <div class="mb-3">
               <label class="form-label fw-semibold" for="profileName">Name</label>
               <input
@@ -35,7 +53,7 @@ const notifyUnsupported = () => window.alert('Not implemented yet')
                 type="text"
                 class="form-control"
                 placeholder="Your name"
-                :value="userName"
+                v-model="form.name"
               />
             </div>
             <div class="mb-3">
@@ -45,7 +63,7 @@ const notifyUnsupported = () => window.alert('Not implemented yet')
                 type="email"
                 class="form-control"
                 placeholder="you@example.com"
-                :value="userEmail"
+                v-model="form.email"
               />
             </div>
             <button type="submit" class="btn btn-primary">Save</button>

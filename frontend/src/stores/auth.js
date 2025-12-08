@@ -71,6 +71,15 @@ export function useAuth() {
     state.initialized = true
   }
 
+  const updateProfile = async (payload) => {
+    await api.put('/api/user/profile', payload)
+    await fetchUser()
+  }
+
+  const updatePassword = async (payload) => {
+    await api.put('/api/user/password', payload)
+  }
+
   return {
     get user() {
       return state.currentUser
@@ -86,5 +95,7 @@ export function useAuth() {
     register,
     logout,
     fetchUser,
+    updateProfile,
+    updatePassword,
   }
 }
