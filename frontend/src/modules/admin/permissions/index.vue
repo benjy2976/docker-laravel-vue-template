@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { usePermissionStore } from '@stores/admin/permissions'
 import Filter from '@/modules/admin/permissions/Filter.vue'
 import List from '@/modules/admin/permissions/List.vue'
 import Form from '@/modules/admin/permissions/Form.vue'
 
 const permissionStore = usePermissionStore()
+const formRef = ref(null)
 
 onMounted(() => {
   permissionStore.get()
@@ -21,13 +22,13 @@ onMounted(() => {
           <p class="text-muted mb-0">Manage permissions and menu entries.</p>
         </div>
         <div class="d-flex gap-2">
-          <button type="button" class="btn btn-primary">New Permission</button>
+          <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">New Permission</button>
         </div>
       </header>
 
       <Filter />
-      <List class="mb-3" />
+      <List class="mb-3" @edit="formRef?.openEdit($event)" />
     </div>
-    <Form />
+    <Form ref="formRef" />
   </section>
 </template>

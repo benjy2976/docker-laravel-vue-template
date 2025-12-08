@@ -4,6 +4,14 @@ import { usePermissionStore } from '@stores/admin/permissions'
 
 const permissionStore = usePermissionStore()
 const { list } = storeToRefs(permissionStore)
+
+const emit = defineEmits(['edit'])
+
+const confirmDelete = async (permission) => {
+  const ok = window.confirm(`¿Eliminar el permiso "${permission.name}"?`)
+  if (!ok) return
+  await permissionStore.delete(permission)
+}
 </script>
 
 <template>
@@ -25,8 +33,8 @@ const { list } = storeToRefs(permissionStore)
           <td>{{ permission.menu_label || '—' }}</td>
           <td>{{ permission.menu_path || '—' }}</td>
           <td class="text-end">
-            <button type="button" class="btn btn-sm btn-outline-primary me-1">Edit</button>
-            <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+            <button type="button" class="btn btn-sm btn-outline-primary me-1" @click="emit('edit', permission)">Edit</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" @click="confirmDelete(permission)">Delete</button>
           </td>
         </tr>
         <tr v-if="!list.length">
