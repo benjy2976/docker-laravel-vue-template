@@ -10,6 +10,7 @@ const form = ref({
   name  : '',
   email : '',
 })
+const errors = ref({})
 
 watch(
   () => auth.user,
@@ -25,8 +26,18 @@ watch(
 const notifyUnsupported = () => toast.info('Aún no implementado')
 
 const onSubmit = async () => {
-  await auth.updateProfile(form.value)
-  toast.success('Perfil actualizado')
+  errors.value = {}
+  try {
+    await auth.updateProfile(form.value)
+    toast.success('Perfil actualizado')
+  } catch (err) {
+    const data = err?.response?.data
+    if (err?.response?.status === 422 && data?.errors) {
+      errors.value = data.errors
+    } else {
+      toast.danger('No se pudo actualizar el perfil')
+    }
+  }
 }
 </script>
 
@@ -54,9 +65,11 @@ const onSubmit = async () => {
                 id="profileName"
                 type="text"
                 class="form-control"
+                :class="{ 'is-invalid': errors.name }"
                 placeholder="Tu nombre"
                 v-model="form.name"
               />
+              <div v-if="errors.name" class="text-danger small mt-1">{{ errors.name[0] }}</div>
             </div>
             <div class="mb-3">
               <label class="form-label fw-semibold" for="profileEmail">Correo electrónico</label>
@@ -64,9 +77,11 @@ const onSubmit = async () => {
                 id="profileEmail"
                 type="email"
                 class="form-control"
+                :class="{ 'is-invalid': errors.email }"
                 placeholder="tu@correo.com"
                 v-model="form.email"
               />
+              <div v-if="errors.email" class="text-danger small mt-1">{{ errors.email[0] }}</div>
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </form>

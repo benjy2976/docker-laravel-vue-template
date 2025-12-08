@@ -11,16 +11,27 @@ const form = ref({
   password              : '',
   password_confirmation : '',
 })
+const errors = ref({})
 
 const notifyUnsupported = () => toast.info('Aún no implementado')
 
 const onSubmit = async () => {
-  await auth.updatePassword(form.value)
-  toast.success('Contraseña actualizada')
-  form.value = {
-    current_password      : '',
-    password              : '',
-    password_confirmation : '',
+  errors.value = {}
+  try {
+    await auth.updatePassword(form.value)
+    toast.success('Contraseña actualizada')
+    form.value = {
+      current_password      : '',
+      password              : '',
+      password_confirmation : '',
+    }
+  } catch (err) {
+    const data = err?.response?.data
+    if (err?.response?.status === 422 && data?.errors) {
+      errors.value = data.errors
+    } else {
+      toast.danger('No se pudo actualizar la contraseña')
+    }
   }
 }
 </script>
@@ -50,8 +61,12 @@ const onSubmit = async () => {
                 v-model="form.current_password"
                 type="password"
                 class="form-control"
+                :class="{ 'is-invalid': errors.current_password }"
                 placeholder="Contraseña actual"
               />
+              <div v-if="errors.current_password" class="text-danger small mt-1">
+                {{ errors.current_password[0] }}
+              </div>
             </div>
             <div class="mb-3">
               <label class="form-label fw-semibold" for="newPassword">Nueva contraseña</label>
@@ -60,8 +75,12 @@ const onSubmit = async () => {
                 v-model="form.password"
                 type="password"
                 class="form-control"
+                :class="{ 'is-invalid': errors.password }"
                 placeholder="Nueva contraseña"
               />
+              <div v-if="errors.password" class="text-danger small mt-1">
+                {{ errors.password[0] }}
+              </div>
             </div>
             <div class="mb-3">
               <label class="form-label fw-semibold" for="confirmPassword">Confirmar contraseña</label>
@@ -70,8 +89,12 @@ const onSubmit = async () => {
                 v-model="form.password_confirmation"
                 type="password"
                 class="form-control"
+                :class="{ 'is-invalid': errors.password_confirmation }"
                 placeholder="Confirmar contraseña"
               />
+              <div v-if="errors.password_confirmation" class="text-danger small mt-1">
+                {{ errors.password_confirmation[0] }}
+              </div>
             </div>
             <button type="submit" class="btn btn-primary">Guardar contraseña</button>
           </form>
