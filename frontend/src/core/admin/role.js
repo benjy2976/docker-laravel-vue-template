@@ -1,4 +1,4 @@
-import Model from '@/pmsg/src/Model'
+import Model from '@benjy2976/pmsg'
 import api from '@/axios'
 
 const roleConfig = {
