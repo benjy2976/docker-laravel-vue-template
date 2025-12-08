@@ -93,14 +93,17 @@ onBeforeUnmount(() => {
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="permissionModalLabel">New Permission</h5>
+          <h5 class="modal-title" id="permissionModalLabel">
+            {{ mode === 'edit' ? 'Editar permiso' : 'Nuevo permiso' }}
+          </h5>
+          <h5 class="modal-title" id="permissionModalLabel">Permiso</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form class="card card-body" @submit.prevent="submit">
             <div class="row g-3">
               <div class="col-md-6">
-                <label class="form-label fw-semibold" for="permissionName">Name</label>
+                <label class="form-label fw-semibold" for="permissionName">Nombre</label>
                 <input
                   id="permissionName"
                   v-model="form.name"
@@ -112,7 +115,7 @@ onBeforeUnmount(() => {
                 <div v-if="errors.name" class="text-danger small mt-1">{{ errors.name[0] }}</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-semibold" for="permissionLabel">Label</label>
+                <label class="form-label fw-semibold" for="permissionLabel">Etiqueta</label>
                 <input
                   id="permissionLabel"
                   v-model="form.menu_label"
@@ -124,7 +127,7 @@ onBeforeUnmount(() => {
                 <div v-if="errors.menu_label" class="text-danger small mt-1">{{ errors.menu_label[0] }}</div>
               </div>
               <div class="col-12">
-                <label class="form-label fw-semibold" for="permissionDescription">Description</label>
+                <label class="form-label fw-semibold" for="permissionDescription">Descripción</label>
                 <textarea
                   id="permissionDescription"
                   v-model="form.description"
@@ -136,7 +139,7 @@ onBeforeUnmount(() => {
                 <div v-if="errors.description" class="text-danger small mt-1">{{ errors.description[0] }}</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-semibold" for="permissionPath">Path</label>
+                <label class="form-label fw-semibold" for="permissionPath">Ruta</label>
                 <input
                   id="permissionPath"
                   v-model="form.menu_path"
@@ -148,7 +151,7 @@ onBeforeUnmount(() => {
                 <div v-if="errors.menu_path" class="text-danger small mt-1">{{ errors.menu_path[0] }}</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-semibold" for="permissionIcon">Icon</label>
+                <label class="form-label fw-semibold" for="permissionIcon">Icono</label>
                 <input
                   id="permissionIcon"
                   v-model="form.icon"
@@ -161,8 +164,8 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <div class="mt-3 d-flex gap-2">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <button type="button" class="btn btn-outline-secondary" @click="close">Cancel</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-outline-secondary" @click="close">Cancelar</button>
             </div>
           </form>
         </div>

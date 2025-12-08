@@ -19,11 +19,11 @@ const confirmDelete = async (permission) => {
     <table class="table align-middle">
       <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Description</th>
-          <th scope="col">Label</th>
-          <th scope="col">Path</th>
-          <th scope="col" class="text-end">Actions</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Etiqueta</th>
+          <th scope="col">Ruta</th>
+          <th scope="col" class="text-end">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -33,12 +33,12 @@ const confirmDelete = async (permission) => {
           <td>{{ permission.menu_label || '—' }}</td>
           <td>{{ permission.menu_path || '—' }}</td>
           <td class="text-end">
-            <button type="button" class="btn btn-sm btn-outline-primary me-1" @click="emit('edit', permission)">Edit</button>
-            <button type="button" class="btn btn-sm btn-outline-danger" @click="confirmDelete(permission)">Delete</button>
+            <button type="button" class="btn btn-sm btn-outline-primary me-1" @click="emit('edit', permission)">Editar</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" @click="confirmDelete(permission)">Eliminar</button>
           </td>
         </tr>
         <tr v-if="!list.length">
-          <td colspan="4" class="text-center text-muted">No permissions found</td>
+          <td colspan="4" class="text-center text-muted">No hay permisos</td>
         </tr>
       </tbody>
     </table>

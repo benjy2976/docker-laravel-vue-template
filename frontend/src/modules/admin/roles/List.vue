@@ -19,9 +19,9 @@ const confirmDelete = async (role) => {
     <table class="table align-middle">
       <thead>
         <tr>
-          <th scope="col">Role</th>
-          <th scope="col">Permissions</th>
-          <th scope="col" class="text-end">Actions</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Permisos</th>
+          <th scope="col" class="text-end">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -34,13 +34,13 @@ const confirmDelete = async (role) => {
               class="btn btn-sm btn-outline-primary me-1"
               @click="emit('edit', role)"
             >
-              Edit
+              Editar
             </button>
-            <button type="button" class="btn btn-sm btn-outline-danger" @click="confirmDelete(role)">Delete</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" @click="confirmDelete(role)">Eliminar</button>
           </td>
         </tr>
         <tr v-if="!list.length">
-          <td colspan="3" class="text-center text-muted">No roles found</td>
+          <td colspan="3" class="text-center text-muted">No hay roles</td>
         </tr>
       </tbody>
     </table>

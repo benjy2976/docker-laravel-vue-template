@@ -125,7 +125,7 @@ onBeforeUnmount(() => {
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="roleModalLabel">
-            {{ mode === 'edit' ? 'Edit Role' : 'New Role' }}
+            {{ mode === 'edit' ? 'Editar rol' : 'Nuevo rol' }}
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
           <form class="card card-body" @submit.prevent="submit">
             <div class="row g-3">
               <div class="col-md-6">
-                <label class="form-label fw-semibold" for="roleName">Name</label>
+                <label class="form-label fw-semibold" for="roleName">Nombre</label>
                 <input
                   id="roleName"
                   v-model="form.name"
@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
                 </div>
               </div>
               <div class="col-12">
-                <label class="form-label fw-semibold">Permissions</label>
+                <label class="form-label fw-semibold">Permisos</label>
                 <div class="row g-2">
                   <div class="col-md-5">
                     <div class="form-text mb-1">Disponibles</div>
@@ -198,8 +198,8 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <div class="mt-3 d-flex gap-2">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <button type="button" class="btn btn-outline-secondary" @click="close">Cancel</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-outline-secondary" @click="close">Cancelar</button>
             </div>
           </form>
         </div>

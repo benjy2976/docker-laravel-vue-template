@@ -19,10 +19,10 @@ onMounted(() => {
       <header class="d-flex align-items-center justify-content-between mb-3">
         <div>
           <h2 class="h5 mb-1">Roles</h2>
-          <p class="text-muted mb-0">Manage roles and their permissions.</p>
+          <p class="text-muted mb-0">Administra los roles y sus permisos.</p>
         </div>
         <div class="d-flex gap-2">
-          <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">New Role</button>
+          <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">Nuevo rol</button>
         </div>
       </header>
 
