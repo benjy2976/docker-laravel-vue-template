@@ -7,6 +7,8 @@ const props = defineProps({
   userName : { type: String, default: "User" }
 });
 
+const emit = defineEmits(['settings', 'logout'])
+
 const baseSections = [
   {
     title    : "Home",
@@ -91,25 +93,33 @@ const isSectionOpen = (section) => {
             </div>
           </li>
           <hr class="my-0"/>
-          <li>
-            <div class="dropdown mt-auto">
-              <a
-                href="#"
-                class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle px-1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="bi bi-person-circle fs-4 me-2"></i>
-                <strong>{{ props.userName || "User" }}</strong>
-              </a>
-              <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+          <li class="mb-1">
+            
+            <button
+              class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+              data-bs-toggle="collapse"
+              :data-bs-target="`#user-collapse`"
+              aria-expanded="false"
+            >
+              <i class="bi bi-person-circle fs-4 me-2"></i>
+              {{ props.userName || "User" }}
+            </button>
+            
+            <div class="collapse" id="user-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li>
+                  <a class="link-body-emphasis d-inline-flex text-decoration-none rounded" href="#" @click.stop.prevent="emit('settings')">
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <a class="link-body-emphasis d-inline-flex text-decoration-none rounded" href="#" @click.stop.prevent="emit('logout')">
+                    Cerrar sesión
+                  </a>
+                </li>
               </ul>
             </div>
+            
           </li>
         </ul>
         
@@ -140,6 +150,10 @@ const isSectionOpen = (section) => {
 .btn-toggle::before {
     order: 2;
     margin-left: auto;
+}
+
+.sidebar .offcanvas-body {
+    overflow: visible;
 }
 .btn-toggle:hover,
 .btn-toggle:focus {
