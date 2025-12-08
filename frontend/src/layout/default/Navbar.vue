@@ -1,5 +1,22 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { Dropdown } from 'bootstrap'
+import AlertCenter from '@/components/AlertCenter.vue'
+
 const emit = defineEmits(['settings', 'logout'])
+const profileBtn = ref(null)
+let profileDropdown = null
+
+onMounted(() => {
+  if (profileBtn.value) {
+    profileDropdown = new Dropdown(profileBtn.value, { autoClose: 'outside' })
+  }
+})
+
+onBeforeUnmount(() => {
+  profileDropdown?.dispose()
+  profileDropdown = null
+})
 </script>
 
 <template>
@@ -20,10 +37,6 @@ const emit = defineEmits(['settings', 'logout'])
       </ul>
       <a class="navbar-brand me-0 px-2 fs-6 text-white" href="#">Company name</a>
     </div>
-    <div class="navbar-nav flex-row d-none d-md-flex px-3">
-      <button class="btn btn-outline-secondary btn-sm me-2" @click="emit('settings')">Settings</button>
-      <button class="btn btn-danger btn-sm" @click="emit('logout')">Sign out</button>
-    </div>
     <ul class="navbar-nav flex-row d-md-none">
       <li class="nav-item text-nowrap">
         <button
@@ -41,19 +54,17 @@ const emit = defineEmits(['settings', 'logout'])
     </ul>
     <ul class="navbar-nav flex-row ms-auto align-items-center gap-2">
       <li class="nav-item">
-        <button class="btn nav-link pe-3 text-white position-relative" type="button" aria-label="Notificaciones">
-          <i class="bi bi-bell fs-5"></i>
-          <span class="badge-counter">3+</span>
-        </button>
+        <AlertCenter />
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <button class="nav-link pe-3 text-white position-relative" type="button" aria-label="Mensajes">
           <i class="bi bi-envelope fs-5"></i>
           <span class="badge-counter">7</span>
         </button>
-      </li>
+      </li> -->
       <li class="nav-item dropdown profile-dropdown">
         <button
+          ref="profileBtn"
           class="nav-link pe-3 text-white"
           type="button"
           data-bs-toggle="dropdown"
@@ -63,11 +74,9 @@ const emit = defineEmits(['settings', 'logout'])
           <i class="bi bi-person-circle fs-4"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#" @click.stop.prevent="emit('settings')">Configuración</a></li>
           <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
+          <li><a class="dropdown-item" href="#" @click.stop.prevent="emit('logout')">Cerrar Session</a></li>
         </ul>
       </li>
     </ul>
@@ -89,18 +98,6 @@ const emit = defineEmits(['settings', 'logout'])
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
 }
 
-.badge-counter {
-  position: absolute;
-  top: 13px;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  padding: 2px 5px;
-  font-size: 0.65rem;
-  line-height: 1;
-  border-radius: 999px;
-  background-color: var(--bs-danger);
-  color: #fff;
-}
 
 .profile-dropdown {
   position: relative;

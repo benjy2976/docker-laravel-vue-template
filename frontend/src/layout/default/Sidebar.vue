@@ -109,12 +109,12 @@ const isSectionOpen = (section) => {
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li>
                   <a class="link-body-emphasis d-inline-flex text-decoration-none rounded" href="#" @click.stop.prevent="emit('settings')">
-                    Settings
+                    Configuración
                   </a>
                 </li>
                 <li>
                   <a class="link-body-emphasis d-inline-flex text-decoration-none rounded" href="#" @click.stop.prevent="emit('logout')">
-                    Cerrar sesión
+                    Cerrar Session
                   </a>
                 </li>
               </ul>
