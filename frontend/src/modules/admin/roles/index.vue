@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoleStore } from '@stores/admin/roles'
 import Filter from '@/modules/admin/roles/Filter.vue'
 import List from '@/modules/admin/roles/List.vue'
 import Form from '@/modules/admin/roles/Form.vue'
 
 const roleStore = useRoleStore()
+const formRef = ref(null)
 
 onMounted(() => {
   roleStore.get()
@@ -21,13 +22,13 @@ onMounted(() => {
           <p class="text-muted mb-0">Manage roles and their permissions.</p>
         </div>
         <div class="d-flex gap-2">
-          <button type="button" class="btn btn-primary">New Role</button>
+          <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">New Role</button>
         </div>
       </header>
 
       <Filter />
-      <List class="mb-3" />
+      <List class="mb-3" @edit="formRef?.openEdit($event)" />
     </div>
-    <Form />
+    <Form ref="formRef" />
   </section>
 </template>

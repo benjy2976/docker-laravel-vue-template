@@ -4,6 +4,14 @@ import { useRoleStore } from '@stores/admin/roles'
 
 const roleStore = useRoleStore()
 const { list } = storeToRefs(roleStore)
+
+const emit = defineEmits(['edit'])
+
+const confirmDelete = async (role) => {
+  const ok = window.confirm(`¿Eliminar el rol "${role.name}"?`)
+  if (!ok) return
+  await roleStore.delete(role)
+}
 </script>
 
 <template>
@@ -21,8 +29,14 @@ const { list } = storeToRefs(roleStore)
           <td>{{ role.name }}</td>
           <td>{{ (role.permissions || []).map(p => p.name).join(', ') || '—' }}</td>
           <td class="text-end">
-            <button type="button" class="btn btn-sm btn-outline-primary me-1">Edit</button>
-            <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary me-1"
+              @click="emit('edit', role)"
+            >
+              Edit
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" @click="confirmDelete(role)">Delete</button>
           </td>
         </tr>
         <tr v-if="!list.length">
