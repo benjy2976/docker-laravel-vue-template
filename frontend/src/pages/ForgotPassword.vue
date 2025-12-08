@@ -1,14 +1,14 @@
 <template>
   <section class="auth-page">
     <div class="text-center mb-4">
-      <h2 class="fw-semibold mb-2">Forgot password</h2>
-      <p class="text-muted mb-0">Enter your email to receive a password reset link</p>
+      <h2 class="fw-semibold mb-2">¿Olvidaste tu contraseña?</h2>
+      <p class="text-muted mb-0">Ingresa tu correo para recibir el enlace de restablecimiento</p>
     </div>
     <div class="card shadow-sm auth-card">
       <div class="card-body p-4">
         <form @submit.prevent="submit" class="d-grid gap-3">
           <div>
-            <label class="form-label fw-semibold">Email address</label>
+            <label class="form-label fw-semibold">Correo electrónico</label>
             <input
               v-model="email"
               type="email"
@@ -22,10 +22,10 @@
           <div v-if="error" class="alert alert-danger py-2 mb-0">{{ error }}</div>
           <button type="submit" class="btn btn-primary btn-lg w-100" :disabled="loading">
             <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
-            Email password reset link
+            Enviar enlace de restablecimiento
           </button>
           <p class="text-center text-muted mb-0">
-            Or, return to <RouterLink to="/login">log in</RouterLink>
+            O bien, vuelve a <RouterLink to="/login">iniciar sesión</RouterLink>
           </p>
         </form>
       </div>
@@ -49,7 +49,7 @@ const submit = async () => {
   try {
     await api.get('/sanctum/csrf-cookie')
     await api.post('/forgot-password', { email: email.value })
-    message.value = 'We have emailed your password reset link.'
+    message.value = 'Te enviamos un enlace para restablecer tu contraseña.'
   } catch (e) {
     error.value = 'No se pudo enviar el enlace'
   } finally {

@@ -1,14 +1,14 @@
 <template>
   <section class="auth-page">
     <div class="text-center mb-4">
-      <h2 class="fw-semibold mb-2">Reset password</h2>
-      <p class="text-muted mb-0">Set a new password for your account</p>
+      <h2 class="fw-semibold mb-2">Restablece tu contraseña</h2>
+      <p class="text-muted mb-0">Elige una nueva contraseña para tu cuenta</p>
     </div>
     <div class="card shadow-sm auth-card">
       <div class="card-body p-4">
         <form @submit.prevent="submit" class="d-grid gap-3">
           <div>
-            <label class="form-label fw-semibold">Email address</label>
+            <label class="form-label fw-semibold">Correo electrónico</label>
             <input
               v-model="form.email"
               type="email"
@@ -18,23 +18,23 @@
             />
           </div>
           <div>
-            <label class="form-label fw-semibold">Password</label>
+            <label class="form-label fw-semibold">Contraseña</label>
             <input
               v-model="form.password"
               type="password"
               class="form-control form-control-lg"
-              placeholder="New password"
+              placeholder="Nueva contraseña"
               required
               autocomplete="new-password"
             />
           </div>
           <div>
-            <label class="form-label fw-semibold">Confirm password</label>
+            <label class="form-label fw-semibold">Confirmar contraseña</label>
             <input
               v-model="form.password_confirmation"
               type="password"
               class="form-control form-control-lg"
-              placeholder="Confirm password"
+              placeholder="Confirma tu contraseña"
               required
               autocomplete="new-password"
             />
@@ -43,7 +43,7 @@
           <div v-if="error" class="alert alert-danger py-2 mb-0">{{ error }}</div>
           <button type="submit" class="btn btn-primary btn-lg w-100" :disabled="loading">
             <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
-            Reset password
+            Restablecer contraseña
           </button>
         </form>
       </div>
@@ -83,7 +83,7 @@ const submit = async () => {
   try {
     await api.get('/sanctum/csrf-cookie')
     await api.post('/reset-password', form)
-    message.value = 'Password actualizado. Redirigiendo al login...'
+    message.value = 'Contraseña actualizada. Redirigiendo al login...'
     setTimeout(() => router.push({ name: 'login' }), 1000)
   } catch (e) {
     error.value = 'No se pudo restablecer la contraseña'
