@@ -16,17 +16,16 @@ onMounted(() => {
 <template>
   <section class="p-3">
     <div class="card card-body">
-      <header class="d-flex align-items-center justify-content-between mb-3">
-        <div>
-          <h2 class="h5 mb-1">Roles</h2>
-          <p class="text-muted mb-0">Administra los roles y sus permisos.</p>
-        </div>
-        <div class="d-flex gap-2">
-          <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">Nuevo rol</button>
-        </div>
+      <header>
+        <h2
+          class="h5 mb-1">Roles</h2>
+        <p class="text-muted mb-0">Administra los roles y sus permisos.</p>
       </header>
+      <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
+        <Filter class="mb-0 flex-shrink-0" />
+        <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">Nuevo rol</button>
+      </div>
 
-      <Filter />
       <List class="mb-3" @edit="formRef?.openEdit($event)" />
     </div>
     <Form ref="formRef" />
