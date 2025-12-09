@@ -14,7 +14,7 @@ const ensureContainer = () => {
 const showToast = (message, variant = 'primary') => {
   ensureContainer()
   const el = document.createElement('div')
-  el.className = `toast align-items-center text-bg-${variant} border-0`
+  el.className = `toast align-items-center text-bg-${variant} border-0 opacity-75`
   el.setAttribute('role', 'alert')
   el.setAttribute('aria-live', 'assertive')
   el.setAttribute('aria-atomic', 'true')
