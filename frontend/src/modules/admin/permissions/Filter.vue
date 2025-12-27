@@ -12,7 +12,7 @@ const limpiar = () => {
 </script>
 
 <template>
-  <form class="mb-0">
+  <form class="mb-0" @submit.prevent="enviar">
     <div class="d-flex justify-content-end">
       <div class="search-box">
         <div class="input-group">
@@ -33,7 +33,7 @@ const limpiar = () => {
           >
             <i class="bi bi-x-lg"></i>
           </button>
-          <button class="btn btn-primary" type="button" aria-label="Buscar" @click="enviar">
+          <button class="btn btn-primary" type="submit" aria-label="Buscar">
             <i class="bi bi-search"></i>
           </button>
         </div>
@@ -41,16 +41,3 @@ const limpiar = () => {
     </div>
   </form>
 </template>
-
-<style scoped>
-.search-box {
-  max-width: 340px;
-  width: 100%;
-}
-
-@media (max-width: 767.98px) {
-  .search-box {
-    width: 100%;
-  }
-}
-</style>

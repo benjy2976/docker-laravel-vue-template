@@ -82,13 +82,21 @@ onMounted(() => {
   }
 })
 
-const availablePermissions = computed(() =>
-  permissionStore.list.filter(p => !(form.value.permissions || []).includes(p.id))
-)
+const availablePermissions = computed(() => {
+  const selected = form.value.permissions || []
+  return permissionStore.list
+    .filter(p => !selected.includes(p.id))
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+})
 
-const assignedPermissions = computed(() =>
-  permissionStore.list.filter(p => (form.value.permissions || []).includes(p.id))
-)
+const assignedPermissions = computed(() => {
+  const selected = form.value.permissions || []
+  return permissionStore.list
+    .filter(p => selected.includes(p.id))
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+})
 
 const assignSelected = () => {
   const merged = new Set([...(form.value.permissions || []), ...selectedAvailable.value])

@@ -1,10 +1,12 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { usePermissionStore } from '@stores/admin/permissions'
+import { useAuth } from '@stores/auth'
 import Table from '@/components/Table.vue'
 
 const permissionStore = usePermissionStore()
 const { list } = storeToRefs(permissionStore)
+const auth = useAuth()
 
 const emit = defineEmits(['edit'])
 
@@ -20,6 +22,7 @@ const confirmDelete = async (permission) => {
     <template #actions="{ selected }">
       <div class="d-flex align-items-center gap-2">
         <button
+          v-if="auth.can('permissions.edit')"
           type="button"
           class="btn btn-outline-primary btn-sm"
           :disabled="!selected.item"
@@ -28,6 +31,7 @@ const confirmDelete = async (permission) => {
           Editar
         </button>
         <button
+          v-if="auth.can('permissions.delete')"
           type="button"
           class="btn btn-outline-danger btn-sm"
           :disabled="!selected.item"

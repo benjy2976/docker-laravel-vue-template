@@ -15,7 +15,10 @@ use Illuminate\Validation\ValidationException;
 class NewPasswordController extends Controller
 {
     /**
-     * Handle an incoming new password request.
+     * Procesa el cambio de contraseña por token.
+     *
+     * @param Request $request Datos de restablecimiento.
+     * @return JsonResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */

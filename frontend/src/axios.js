@@ -11,8 +11,8 @@ const api = axios.create({
   xsrfCookieName  : 'XSRF-TOKEN',
   xsrfHeaderName  : 'X-XSRF-TOKEN',
   headers         : {
-    'X  '  : 'XMLHttpRequest',
-    Accept : 'application/json',
+    'X-Requested-With' : 'XMLHttpRequest',
+    Accept             : 'application/json',
   },
 })
 

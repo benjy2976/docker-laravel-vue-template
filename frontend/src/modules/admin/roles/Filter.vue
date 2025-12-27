@@ -41,16 +41,3 @@ const limpiar = () => {
     </div>
   </form>
 </template>
-
-<style scoped>
-.search-box {
-  width: 320px;
-  max-width: 100%;
-}
-
-@media (max-width: 767.98px) {
-  .search-box {
-    width: 100%;
-  }
-}
-</style>

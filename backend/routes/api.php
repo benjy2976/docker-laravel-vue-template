@@ -17,8 +17,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::apiResource('projects', ProjectController::class);
-    Route::apiResource('permissions', PermissionController::class)->middleware('role:admin');
-    Route::apiResource('roles', RoleController::class)->middleware('role:admin');
+    Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('roles', RoleController::class);
     Route::put('/user/profile', [ProfileController::class, 'updateProfile']);
     Route::put('/user/password', [ProfileController::class, 'updatePassword']);
 });

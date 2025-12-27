@@ -10,7 +10,7 @@ const props = defineProps({
 const emit = defineEmits(['settings', 'logout'])
 
 const baseSections = [
-  {
+  /*  {
     title    : "Home",
     icon     : "bi-house-door",
     children : [
@@ -28,12 +28,22 @@ const baseSections = [
       { label: "Shipped", to: "/orders/shipped" },
       { label: "Returned", to: "/orders/returned" }
     ]
-  }
+  } */
 ];
 
 const auth = useAuth();
 const route = useRoute();
 const sections = computed(() => [...baseSections, ...(auth.menuSections || [])]);
+
+const sectionId = (section, index) => {
+  const base = String(section.title || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\\u0300-\\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+  return `${base || 'section'}-${index}-collapse`;
+};
 
 const isSectionOpen = (section) => {
   const children = section.children || [];
@@ -69,7 +79,7 @@ const isSectionOpen = (section) => {
               class="btn btn-toggle d-inline-flex align-items-center rounded border-0"
               :class="{ collapsed: !isSectionOpen(section) }"
               data-bs-toggle="collapse"
-              :data-bs-target="`#${section.title.toLowerCase() }-${i}-collapse`"
+              :data-bs-target="`#${sectionId(section, i)}`"
               :aria-expanded="isSectionOpen(section)"
             >
               <i :class="['bi', section.icon, 'me-2']" aria-hidden="true"></i>
@@ -77,7 +87,7 @@ const isSectionOpen = (section) => {
             </button>
             <div
               :class="['collapse', { show: isSectionOpen(section) }]"
-              :id="`${section.title.toLowerCase() }-${i}-collapse`"
+              :id="sectionId(section, i)"
             >
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li v-for="item in section.children" :key="item.to">

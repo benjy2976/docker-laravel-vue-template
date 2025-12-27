@@ -27,11 +27,11 @@
   - Generar migraciones/seeders solo si el módulo es nuevo y no existen; si ya hay, no tocarlos salvo instrucción explícita.
 - Frontend:
   - Core model en `frontend/src/core/...` con alias/route/default y export del modelo + `createModelStore`.
-  - Store Pinia en `frontend/src/store/...` reutilizando el store generado por el core model.
+  - Store Pinia en `frontend/src/stores/...` reutilizando el store generado por el core model.
   - Estándar de store Pinia para modelos: `defineStore(model.alias, createModelStore())`; sin `reactive` extra ni doble alias, añadir overrides de state/getters/actions vacios para que el usuario pueda cargarlos, segun el siguient eejemplo
 ```js
 import { defineStore } from 'pinia'
-import { Role, createRoleStore } from '@/core/auth/role'
+import { Role, createRoleStore } from '@core/admin/role'
 // Estado, getters y acciones adicionales para el store de roles
 const extraState = { /* ... */ }
 const extraGetters = { /* ... */ }
@@ -42,6 +42,6 @@ export const useRoleStore = defineStore(
   createRoleStore(extraState, extraGetters, extraActions)
 )
 ```
-  - Adaptadores de respuesta/paginación los gestiona la librería pmsg; solo implementar manualmente si se solicita de forma explícita y en los lugares indicados.
+  - Adaptadores de respuesta/paginación los gestiona la librería @benjy2976/pmsg; solo implementar manualmente si se solicita de forma explícita y en los lugares indicados.
 
 TODO: Añadir pasos de build/preview frontend y despliegue.

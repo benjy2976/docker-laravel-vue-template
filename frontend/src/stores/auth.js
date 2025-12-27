@@ -80,6 +80,11 @@ export function useAuth() {
     await api.put('/api/user/password', payload)
   }
 
+  const can = (permission) => {
+    const perms = state.currentUser?.permissions || []
+    return perms.some(p => p.name === permission)
+  }
+
   return {
     get user() {
       return state.currentUser
@@ -97,5 +102,6 @@ export function useAuth() {
     fetchUser,
     updateProfile,
     updatePassword,
+    can,
   }
 }

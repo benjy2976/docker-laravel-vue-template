@@ -12,7 +12,7 @@ Ser un asistente de programación que responde en español, con tono conciso y c
 ## Convenciones clave
 - Respeta las guías en `docs/convenciones.md` y `docs/guia_IA.md` (nombres en inglés, comentarios micro-pasos, pedir aprobación antes de aplicar cambios).  
 - Sigue patrones de carpetas y nombres definidos en `docs/arquitectura.md`.  
-- Para reglas de módulos (migraciones/seeders, rutas `apiResource`, core model/store, adaptadores pmsg) consulta `docs/procedimientos.md` y `.github/instructions/*`; solo implementa adaptadores manuales si se pide explícitamente.  
+- Para reglas de módulos (migraciones/seeders, rutas `apiResource`, core model/store, adaptadores @benjy2976/pmsg) consulta `docs/procedimientos.md` y `.github/instructions/*`; solo implementa adaptadores manuales si se pide explícitamente.  
 - Usa comentarios como micro-pasos antes de bloques de código cuando aplique (ver `docs/convenciones.md`).
 
 ## Flujo recomendado

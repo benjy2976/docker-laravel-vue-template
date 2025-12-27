@@ -10,9 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureEmailIsVerified
 {
     /**
-     * Handle an incoming request.
+     * Valida que el usuario tenga el correo verificado.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Request $request Request entrante.
+     * @param Closure $next Continuación del pipeline.
+     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {

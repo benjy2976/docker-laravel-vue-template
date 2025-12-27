@@ -6,7 +6,7 @@
 - Para tareas de código, añadir micro-comentarios de pasos previos en bloques complejos.
 - No inventar endpoints ni datos; usar `TODO` o pedir aclaración.
 - Respetar flujos críticos: autenticación Sanctum (csrf-cookie → login/register → api/user), roles/permisos (Spatie), menús dinámicos basados en permisos.
-- Para reglas específicas de módulos (migraciones/seeders, rutas `apiResource`, core model/store, adaptadores pmsg), seguir los detalles en `docs/procedimientos.md`, `docs/convenciones.md` y `.github/instructions/*`.
+- Para reglas específicas de módulos (migraciones/seeders, rutas `apiResource`, core model/store, adaptadores @benjy2976/pmsg), seguir los detalles en `docs/procedimientos.md`, `docs/convenciones.md` y `.github/instructions/*`.
 - Si falta documentación de una regla usada, notificar y sugerir dónde agregarla.
 # sobre el analisis de reglas en la memoria
 - cuando se te solicite revisar reglas en la memoria siempre las aras una a una, y compararas las ideas nuevas tambien una a una para posicionarlas donde deben de estar y evitar redundancias

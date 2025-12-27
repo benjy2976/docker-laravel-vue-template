@@ -1,10 +1,12 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useRoleStore } from '@stores/admin/roles'
+import { useAuth } from '@stores/auth'
 import Table from '@/components/Table.vue'
 
 const roleStore = useRoleStore()
 const { list } = storeToRefs(roleStore)
+const auth = useAuth()
 
 const emit = defineEmits(['edit'])
 
@@ -20,6 +22,7 @@ const confirmDelete = async (role) => {
     <template #actions="{ selected }">
       <div class="d-flex align-items-center gap-2">
         <button
+          v-if="auth.can('roles.edit')"
           type="button"
           class="btn btn-outline-primary btn-sm"
           :disabled="!selected.item"
@@ -28,6 +31,7 @@ const confirmDelete = async (role) => {
           Editar
         </button>
         <button
+          v-if="auth.can('roles.delete')"
           type="button"
           class="btn btn-outline-danger btn-sm"
           :disabled="!selected.item"

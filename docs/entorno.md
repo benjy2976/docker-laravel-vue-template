@@ -12,6 +12,6 @@
   - `SESSION_DOMAIN=localhost`
   - `SANCTUM_STATEFUL_DOMAINS=localhost:5173`
   - Mailpit: `MAIL_MAILER=smtp`, `MAIL_HOST=mailpit`, `MAIL_PORT=1025`
-- Alias Vite: `@` (src), `@core`, `@store`, `@pmsg`.
+- Alias Vite: `@` (src), `@core`, `@stores`.
 
 TODO: Añadir comandos de instalación dependencias locales y versiones exactas.

@@ -4,8 +4,10 @@ import { useRoleStore } from '@stores/admin/roles'
 import Filter from '@/modules/admin/roles/Filter.vue'
 import List from '@/modules/admin/roles/List.vue'
 import Form from '@/modules/admin/roles/Form.vue'
+import { useAuth } from '@stores/auth'
 
 const roleStore = useRoleStore()
+const auth = useAuth()
 const formRef = ref(null)
 
 onMounted(() => {
@@ -23,7 +25,14 @@ onMounted(() => {
       </header>
       <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
         <Filter class="mb-0 flex-shrink-0" />
-        <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">Nuevo rol</button>
+        <button
+          v-if="auth.can('roles.create')"
+          type="button"
+          class="btn btn-primary"
+          @click="formRef?.openCreate()"
+        >
+          Nuevo rol
+        </button>
       </div>
 
       <List class="mb-3" @edit="formRef?.openEdit($event)" />

@@ -4,8 +4,10 @@ import { usePermissionStore } from '@stores/admin/permissions'
 import Filter from '@/modules/admin/permissions/Filter.vue'
 import List from '@/modules/admin/permissions/List.vue'
 import Form from '@/modules/admin/permissions/Form.vue'
+import { useAuth } from '@stores/auth'
 
 const permissionStore = usePermissionStore()
+const auth = useAuth()
 const formRef = ref(null)
 
 onMounted(() => {
@@ -23,7 +25,14 @@ onMounted(() => {
 
       <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
         <Filter class="mb-0 flex-shrink-0" />
-        <button type="button" class="btn btn-primary" @click="formRef?.openCreate()">Nuevo permiso</button>
+        <button
+          v-if="auth.can('permissions.create')"
+          type="button"
+          class="btn btn-primary"
+          @click="formRef?.openCreate()"
+        >
+          Nuevo permiso
+        </button>
       </div>
 
       <List class="mb-3" @edit="formRef?.openEdit($event)" />

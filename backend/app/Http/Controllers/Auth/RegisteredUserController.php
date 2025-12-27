@@ -14,7 +14,10 @@ use Illuminate\Validation\Rules;
 class RegisteredUserController extends Controller
 {
     /**
-     * Handle an incoming registration request.
+     * Registra un nuevo usuario.
+     *
+     * @param Request $request Datos de registro.
+     * @return Response
      *
      * @throws \Illuminate\Validation\ValidationException
      */

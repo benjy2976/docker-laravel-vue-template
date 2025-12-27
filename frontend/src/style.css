@@ -79,3 +79,14 @@ a { text-decoration: none; }
   right: 16px;
   bottom: 16px;
 }
+
+.search-box {
+  width: 320px;
+  max-width: 100%;
+}
+
+@media (max-width: 767.98px) {
+  .search-box {
+    width: 100%;
+  }
+}

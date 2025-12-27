@@ -11,7 +11,12 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Handle an incoming authentication request.
+     * Procesa la autenticación del usuario.
+     *
+     * @param LoginRequest $request Request con credenciales validadas.
+     * @return Response
+     *
+     * @throws \Illuminate\Validation\ValidationException Si las credenciales no son válidas.
      */
     public function store(LoginRequest $request): Response
     {
@@ -25,7 +30,10 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * Cierra la sesión autenticada.
+     *
+     * @param Request $request Request actual.
+     * @return Response
      */
     public function destroy(Request $request): Response
     {
