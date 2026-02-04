@@ -1,0 +1,6 @@
+.DS_Store
+.env
+.env.db
+backups
+.env.dev
+.env.prod
