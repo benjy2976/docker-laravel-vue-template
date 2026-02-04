@@ -6,10 +6,42 @@
   ```
   Backend en 8000, frontend en 5173, mailpit en 8025.
 - Migraciones/seeders:
+  - En esta etapa del proyecto, unificar cambios en la migracion que crea la tabla (no crear migraciones adicionales) y pedir aprobacion antes de crear una nueva.
   ```bash
   docker compose exec backend php artisan migrate
   docker compose exec backend php artisan db:seed
   ```
+
+## Registro de tablas en scripts de backup
+- Cuando crees una nueva tabla (migración nueva), debes agregarla al script de modelos de backup:
+  - Archivo: `scripts/db_models_pg.sh`
+  - Agregar la tabla en el modelo correspondiente según su namespace:
+    - `app/Models/` (base) → modelo `auth`
+    - `app/Models/Project` → modelo `projects`
+    - Spatie roles/permisos → modelo `permissions`
+  - También agregar la tabla en el modelo `full` (respaldo completo).
+  - Verificar que el nombre de la tabla coincida exactamente con el definido en la migración.
+
+## Backups de base de datos (por modelo)
+- Listar modelos disponibles:
+  ```bash
+  ./scripts/db_backup_pg.sh --list-models
+  ```
+- Crear backup por modelo:
+  ```bash
+  ./scripts/db_backup_pg.sh --model projects
+  ./scripts/db_backup_pg.sh --model auth
+  ```
+- Restaurar un modelo:
+  ```bash
+  ./scripts/db_restore_pg.sh <backup_dir> data --model projects
+  ./scripts/db_restore_pg.sh <backup_dir> all --model auth
+  ```
+- Compatibilidad entre versiones: si falta una tabla en el destino se omite (usar `--strict` para fallar).
+- `--truncate` elimina datos previos del modelo con `CASCADE` (usar con cuidado).
+
+## Deploy frontend (cache)
+- Los assets generados por Vite incluyen hash; evitar cachear `index.html` para propagar cambios sin hard refresh.
 - Limpieza de caché (Laravel):
   ```bash
   docker compose exec backend php artisan config:clear
@@ -43,5 +75,7 @@ export const useRoleStore = defineStore(
 )
 ```
   - Adaptadores de respuesta/paginación los gestiona la librería @benjy2976/pmsg; solo implementar manualmente si se solicita de forma explícita y en los lugares indicados.
+  - Métodos custom (sin store): cuando se necesita un endpoint puntual sin estado, crear el core en `frontend/src/core/...` y exponer el método en `methods`. No construir rutas manualmente en el componente si existe core.
+  - TODO: agregar un ejemplo real cuando exista un endpoint puntual sin store en template.
 
 TODO: Añadir pasos de build/preview frontend y despliegue.

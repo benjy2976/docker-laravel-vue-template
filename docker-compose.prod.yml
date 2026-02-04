@@ -1,0 +1,21 @@
+services:
+  backend:
+
+  web:
+
+  frontend:
+    env_file:
+      - ./.env.prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL:-https://api.example.com}
+        VITE_APP_NAME: ${VITE_APP_NAME:-ProdTemplate}
+    ports:
+      - "8080:80"
+    networks:
+      - proxy_net
+    depends_on:
+      backend:
+        condition: service_started

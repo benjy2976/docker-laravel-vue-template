@@ -4,6 +4,7 @@
   - `POST /login`, `POST /register`, `POST /forgot-password`, `POST /reset-password`, `POST /logout`.
   - `GET /api/user` (carga roles y permisos).
   - `apiResource /api/projects` (CRUD proyectos).
+  - `apiResource /api/roles` (CRUD roles; middleware de permisos por acción).
   - `apiResource /api/permissions` (CRUD permisos; middleware de permisos por acción).
 - Campos extra en `permissions` para menús dinámicos:
   - `is_menu`, `menu_label`, `menu_path`, `icon`, `parent_id`, `sort_order`.

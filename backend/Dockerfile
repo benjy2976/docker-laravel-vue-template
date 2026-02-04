@@ -31,6 +31,10 @@ COPY . .
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
 EXPOSE 9000
 
+ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]

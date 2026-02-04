@@ -1,11 +1,23 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
+// Tabla: renderiza headers internamente, maneja orden y paginacion, y expone
+// helpers de seleccion (teclado + doble click).
 const props = defineProps({
-  items      : { type: Array, default: () => [] },
-  tag        : { type: String, default: 'row' },
-  pageLength : { type: Number, default: 10 },
-  noAction   : { type: Boolean, default: false },
+  // items: filas crudas a renderizar (ordenadas y paginadas internamente).
+  items       : { type: Array, default: () => [] },
+  // tag: id base para construir ids de filas para navegacion con teclado.
+  tag         : { type: String, default: 'row' },
+  // pageLength: numero de filas por pagina.
+  pageLength  : { type: Number, default: 10 },
+  // noAction: oculta el contenedor del slot actions cuando es true.
+  noAction    : { type: Boolean, default: false },
+  // headers: [{ title, key, sortKey?, sortable?, width?, class? }]
+  headers     : { type: Array, default: () => [] },
+  // defaultSort: { key, direction } o 'id'.
+  defaultSort : { type: [String, Object], default: null },
+  // rowKey: string o funcion para construir keys estables.
+  rowKey      : { type: [String, Function], default: null },
 })
 
 const emit = defineEmits(['enter'])
@@ -22,7 +34,117 @@ const tableRef = ref(null)
 const headRef = ref(null)
 const bodyRef = ref(null)
 
-const lastPage = computed(() => Math.ceil(props.items.length / props.pageLength) || 1)
+// Normaliza defaultSort y retorna { key, direction } o null.
+const resolvedDefaultSort = computed(() => {
+  if (!props.defaultSort) return null
+  if (typeof props.defaultSort === 'string') {
+    return { key: props.defaultSort, direction: 'desc' }
+  }
+  const key = props.defaultSort.key
+  if (!key) return null
+  const direction = String(props.defaultSort.direction || 'asc').toLowerCase()
+  return { key, direction: direction === 'desc' ? 'desc' : 'asc' }
+})
+
+const sortKey = ref(null)
+const sortDirection = ref('asc')
+
+// Cuando defaultSort cambia (o en el primer render), reinicia el orden.
+watch(
+  () => resolvedDefaultSort.value,
+  (value) => {
+    if (!value?.key) {
+      sortKey.value = null
+      sortDirection.value = 'asc'
+      return
+    }
+    sortKey.value = value.key
+    sortDirection.value = value.direction || 'asc'
+  },
+  { immediate: true }
+)
+
+// isSortable: valida si el header permite orden y retorna boolean.
+const isSortable = (header) => header?.sortable !== false && Boolean(header?.key)
+
+// resolveSortAccessor: retorna sortKey si existe, si no usa key.
+const resolveSortAccessor = (header) => {
+  if (!header) return null
+  return header.sortKey || header.key
+}
+
+// resolveSortValue: retorna el valor a ordenar segun el accessor.
+const resolveSortValue = (item, accessor) => {
+  if (typeof accessor === 'function') return accessor(item)
+  if (typeof accessor === 'string') return item?.[accessor]
+  return null
+}
+
+// compareValues: retorna el orden relativo entre dos valores.
+// - null/undefined van al final
+// - numeros ordenan numericamente
+// - strings usan localeCompare en es con soporte numerico
+const compareValues = (left, right) => {
+  if (left === null || left === undefined) return right === null || right === undefined ? 0 : 1
+  if (right === null || right === undefined) return -1
+  if (typeof left === 'number' && typeof right === 'number') return left - right
+  const leftText = String(left).toLowerCase()
+  const rightText = String(right).toLowerCase()
+  return leftText.localeCompare(rightText, 'es', { numeric: true, sensitivity: 'base' })
+}
+
+// toggleSort: ajusta columna/direccion activa; no retorna.
+const toggleSort = (header) => {
+  if (!isSortable(header)) return
+  if (sortKey.value === header.key) {
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortKey.value = header.key
+    sortDirection.value = 'asc'
+  }
+}
+
+// sortIcon: retorna la clase del icono segun el estado actual.
+const sortIcon = (header) => {
+  if (!isSortable(header)) return ''
+  if (sortKey.value !== header.key) return 'bi-arrow-down-up'
+  return sortDirection.value === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'
+}
+
+// headerClass: retorna clases para <th> segun header.class.
+const headerClass = (header) => {
+  const value = header?.class
+  if (Array.isArray(value)) return value.filter(Boolean).join(' ')
+  if (typeof value === 'string') return value
+  return ''
+}
+
+// headerStyle: retorna estilo para <th> segun header.width o null.
+const headerStyle = (header) => {
+  if (!header?.width) return null
+  const width = typeof header.width === 'number' ? `${header.width}px` : header.width
+  return { width }
+}
+
+// sortedItems: retorna items ordenados antes de paginar.
+const sortedItems = computed(() => {
+  if (!sortKey.value) return [...props.items]
+  const header = props.headers.find(item => item.key === sortKey.value)
+  const accessor = header ? resolveSortAccessor(header) : sortKey.value
+  const items = [...props.items]
+  items.sort((a, b) => {
+    const result = compareValues(
+      resolveSortValue(a, accessor),
+      resolveSortValue(b, accessor)
+    )
+    return sortDirection.value === 'desc' ? -result : result
+  })
+  return items
+})
+
+// lastPage: retorna el total de paginas disponible.
+const lastPage = computed(() => Math.ceil(sortedItems.value.length / props.pageLength) || 1)
+// Mantiene page dentro del rango cuando la lista se reduce.
 watch(
   () => lastPage.value,
   () => {
@@ -33,11 +155,13 @@ watch(
   }
 )
 
+// itemsPage: retorna la pagina actual de items.
 const itemsPage = computed(() => {
   const start = (page.value - 1) * props.pageLength
-  return props.items.slice(start, start + props.pageLength)
+  return sortedItems.value.slice(start, start + props.pageLength)
 })
 
+// status: retorna el indice y item seleccionado.
 const status = computed(() => {
   const index = selected.value.index
   return {
@@ -46,11 +170,13 @@ const status = computed(() => {
   }
 })
 
+// resetSelection: limpia la seleccion y no retorna.
 const resetSelection = () => {
   selected.value.index = null
   selected.value.clickPosition = 0
 }
 
+// moveRight: avanza una pagina y retorna true si se movio.
 const moveRight = () => {
   if (page.value < lastPage.value) {
     page.value += 1
@@ -60,6 +186,7 @@ const moveRight = () => {
   return false
 }
 
+// moveLeft: retrocede una pagina y retorna true si se movio.
 const moveLeft = () => {
   if (page.value > 1) {
     page.value -= 1
@@ -69,16 +196,19 @@ const moveLeft = () => {
   return false
 }
 
+// moveStart: mueve la seleccion al inicio de la pagina y no retorna.
 const moveStart = () => {
   selected.value.index = 0
   slide()
 }
 
+// moveEnd: mueve la seleccion al final de la pagina y no retorna.
 const moveEnd = () => {
   selected.value.index = Math.min(props.pageLength, itemsPage.value.length) - 1
   slide()
 }
 
+// slide: hace scroll para mantener visible la seleccion y no retorna.
 const slide = (tag = null) => {
   if (selected.value.index === null) return
   const row = bodyRef.value?.querySelector(`#${props.tag}${selected.value.index}`)
@@ -94,6 +224,7 @@ const slide = (tag = null) => {
   }
 }
 
+// selectRow: registra la seleccion y el offset de click, no retorna.
 const selectRow = (index) => {
   selected.value.index = index
   const row = bodyRef.value?.querySelector(`#${props.tag}${index}`)
@@ -102,6 +233,7 @@ const selectRow = (index) => {
   selected.value.clickPosition = row.offsetTop - selected.value.headHeight - bodyRef.value.scrollTop
 }
 
+// move: mueve la seleccion por delta y no retorna.
 const move = (delta, tag = null) => {
   let newIndex = 0
   if (selected.value.index !== null) {
@@ -119,11 +251,13 @@ const move = (delta, tag = null) => {
   slide(tag)
 }
 
+// foco: selecciona el input y activa la fila, no retorna.
 const foco = (e, index) => {
   e.target.select?.()
   selectRow(index)
 }
 
+// clickRow: maneja click y doble click; no retorna.
 const clickRow = (index) => {
   if (clickTimer && selected.value.index === index) {
     selectRow(index)
@@ -142,8 +276,10 @@ const clickRow = (index) => {
   }
 }
 
+// enter: emite la fila activa al presionar Enter y no retorna.
 const enter = () => emit('enter', status.value)
 
+// classRow: retorna la clase de fila segun seleccion/item.
 const classRow = (index) => {
   if (selected.value.index === index) {
     return 'table-active'
@@ -151,6 +287,15 @@ const classRow = (index) => {
   return itemsPage.value[index]?.class || ''
 }
 
+// resolveRowKey: retorna una key estable para cada fila.
+const resolveRowKey = (item, index) => {
+  if (!props.rowKey) return index
+  if (typeof props.rowKey === 'function') return props.rowKey(item) ?? index
+  if (typeof props.rowKey === 'string') return item?.[props.rowKey] ?? index
+  return index
+}
+
+// onBeforeUnmount: limpia el timer pendiente y no retorna.
 onBeforeUnmount(() => {
   if (clickTimer) clearTimeout(clickTimer)
 })
@@ -168,19 +313,40 @@ onBeforeUnmount(() => {
     @keydown.end.prevent.stop="moveEnd()"
     @keydown.enter.prevent="enter"
   >
-    <div v-if="!noAction" class="mb-3">
+    <div v-if="!noAction" class="mb-1">
       <slot name="actions" :selected="status" ></slot>
     </div>
     <div class="table-responsive">
       <table ref="tableRef" class="table table-hover table-bordered mb-0">
         <thead ref="headRef" class="table-light">
-          <slot name="header" ></slot>
+          <tr>
+            <th
+              v-for="header in props.headers"
+              :key="header.key || header.title"
+              scope="col"
+              :class="headerClass(header)"
+              class="fw-normal"
+              :style="headerStyle(header)"
+            >
+              <button
+                v-if="isSortable(header)"
+                type="button"
+                class="btn btn-link p-0 d-inline-flex align-items-center gap-1 text-decoration-none text-black"
+                :class="{ 'fw-bold': sortKey === header.key }"
+                @click="toggleSort(header)"
+              >
+                <span>{{ header.title }}</span>
+                <i class="bi" :class="sortIcon(header)"></i>
+              </button>
+              <span v-else>{{ header.title }}</span>
+            </th>
+          </tr>
         </thead>
         <tbody ref="bodyRef">
           <tr
             v-for="(item, index) in itemsPage"
             :id="`${tag}${index}`"
-            :key="index"
+            :key="resolveRowKey(item, index)"
             :class="classRow(index)"
             @click.prevent.stop="clickRow(index)"
           >

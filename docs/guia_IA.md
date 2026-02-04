@@ -7,6 +7,7 @@
 - No inventar endpoints ni datos; usar `TODO` o pedir aclaración.
 - Respetar flujos críticos: autenticación Sanctum (csrf-cookie → login/register → api/user), roles/permisos (Spatie), menús dinámicos basados en permisos.
 - Para reglas específicas de módulos (migraciones/seeders, rutas `apiResource`, core model/store, adaptadores @benjy2976/pmsg), seguir los detalles en `docs/procedimientos.md`, `docs/convenciones.md` y `.github/instructions/*`.
+- Para tablas en frontend, consultar el manual en `docs/table-component.md` antes de proponer cambios o agregar tablas nuevas.
 - Si falta documentación de una regla usada, notificar y sugerir dónde agregarla.
 # sobre el analisis de reglas en la memoria
 - cuando se te solicite revisar reglas en la memoria siempre las aras una a una, y compararas las ideas nuevas tambien una a una para posicionarlas donde deben de estar y evitar redundancias
@@ -15,3 +16,9 @@
 - antes de ejecutar una tarea, leer los archivos de memoria relevantes (`docs/guia_IA.md`, `docs/procedimientos.md`, `docs/convenciones.md`, `.github/instructions/*`, `.github/copilot-instructions.md`) y aplicar **todas** las reglas que apliquen, sin omitir ninguna aunque parezca obvia.
 - si hay ambigüedad o reglas potencialmente en conflicto, detenerse y pedir confirmación; no asumir.
 - cuando se vaya a incluir una regla siempre se tiene que verificar coliciones con las reglas existentes y de encontrarse consultar al usuario
+- si se crea un nuevo `context.md` en frontend, indexarlo en esta guia (seccion de contextos) antes de cerrar la tarea
+- en produccion, remover permisos `.delete` del rol admin (temporalmente habilitados en desarrollo)
+
+# Contextos de modulos frontend (arbol)
+- Admin/Roles: `frontend/src/modules/admin/roles/context.md`
+- Admin/Permissions: `frontend/src/modules/admin/permissions/context.md`

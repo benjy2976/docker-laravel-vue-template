@@ -8,8 +8,16 @@ const permissionStore = usePermissionStore()
 const { list } = storeToRefs(permissionStore)
 const auth = useAuth()
 
+const headers = [
+  { title: 'Nombre', key: 'name' },
+  { title: 'Descripcion', key: 'description', sortable: false },
+  { title: 'Etiqueta', key: 'menu_label', sortable: false },
+  { title: 'Ruta', key: 'menu_path', sortable: false },
+]
+
 const emit = defineEmits(['edit'])
 
+// Confirma eliminacion del permiso y actualiza el store; no retorna.
 const confirmDelete = async (permission) => {
   const ok = window.confirm(`¿Eliminar el permiso "${permission.name}"?`)
   if (!ok) return
@@ -18,7 +26,13 @@ const confirmDelete = async (permission) => {
 </script>
 
 <template>
-  <Table :items="list" :page-length="10" tag="perm">
+  <Table
+    :items="list"
+    :headers="headers"
+    :default-sort="{ key: 'id', direction: 'desc' }"
+    :page-length="10"
+    tag="perm"
+  >
     <template #actions="{ selected }">
       <div class="d-flex align-items-center gap-2">
         <button
@@ -40,15 +54,6 @@ const confirmDelete = async (permission) => {
           Eliminar
         </button>
       </div>
-    </template>
-
-    <template #header>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Etiqueta</th>
-        <th scope="col">Ruta</th>
-      </tr>
     </template>
 
     <template #body="{ item }">

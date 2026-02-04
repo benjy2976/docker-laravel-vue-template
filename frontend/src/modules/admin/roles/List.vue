@@ -8,8 +8,14 @@ const roleStore = useRoleStore()
 const { list } = storeToRefs(roleStore)
 const auth = useAuth()
 
+const headers = [
+  { title: 'Rol', key: 'name' },
+  { title: 'Permisos', key: 'permissions', sortable: false },
+]
+
 const emit = defineEmits(['edit'])
 
+// Confirma eliminacion del rol y actualiza el store; no retorna.
 const confirmDelete = async (role) => {
   const ok = window.confirm(`¿Eliminar el rol "${role.name}"?`)
   if (!ok) return
@@ -18,7 +24,13 @@ const confirmDelete = async (role) => {
 </script>
 
 <template>
-  <Table :items="list" :page-length="10" tag="role">
+  <Table
+    :items="list"
+    :headers="headers"
+    :default-sort="{ key: 'id', direction: 'desc' }"
+    :page-length="10"
+    tag="role"
+  >
     <template #actions="{ selected }">
       <div class="d-flex align-items-center gap-2">
         <button
@@ -40,13 +52,6 @@ const confirmDelete = async (role) => {
           Eliminar
         </button>
       </div>
-    </template>
-
-    <template #header>
-      <tr>
-        <th scope="col">Rol</th>
-        <th scope="col">Permisos</th>
-      </tr>
     </template>
 
     <template #body="{ item }">

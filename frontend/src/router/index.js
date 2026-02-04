@@ -57,6 +57,7 @@ const router = createRouter({
   routes,
 })
 
+// Protege rutas y redirige segun autenticacion; no retorna.
 router.beforeEach(async (to, from, next) => {
   const auth = useAuth()
 
@@ -69,11 +70,11 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  if (to.meta.requiresAuth && !auth.isAuthenticated.value) {
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return next({ name: 'login' })
   }
 
-  if (auth.isAuthenticated.value && ['login', 'register', 'forgot'].includes(to.name)) {
+  if (auth.isAuthenticated && ['login', 'register', 'forgot'].includes(to.name)) {
     return next({ name: 'dashboard' })
   }
 

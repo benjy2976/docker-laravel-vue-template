@@ -9,3 +9,4 @@ applyTo:
 - Al añadir servicios (ej. mailpit), refleja variables en `.env` y `docs/entorno.md` (previa aprobación).
 - Usa comentarios de micro-pasos en controladores/servicios complejos.
 - Pruebas: ejecutar y documentar comandos en `docs/procedimientos.md` cuando corresponda.
+- Tablas nuevas: al crear una migración con `Schema::create()`, agregar la tabla en `scripts/db_models_pg.sh` en el modelo correspondiente según namespace y también en `full`. Pausar si hay duda sobre a qué modelo pertenece.

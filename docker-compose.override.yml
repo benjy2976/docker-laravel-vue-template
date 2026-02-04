@@ -1,0 +1,40 @@
+services:
+  db:
+    ports:
+      - "5434:5432"
+
+  backend:
+    command: php-fpm
+    env_file:
+      - ./.env.dev
+
+  web:
+    ports:
+      - "8000:80"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: sh -c "npm install && npm run dev -- --host --port 5173"
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./.env.dev
+    networks:
+      - proxy_net
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    depends_on:
+      backend:
+        condition: service_started
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - proxy_net
