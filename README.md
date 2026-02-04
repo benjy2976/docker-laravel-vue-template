@@ -17,6 +17,9 @@ Esta memoria centraliza decisiones, convenciones y procedimientos para colaborar
 Crear la red externa (una sola vez):
 ```bash
 docker network create proxy_net
+sudo mkdir -p backend/bootstrap/cache
+sudo mkdir -p backend/storage/framework/{cache/data,sessions,views}
+sudo chmod -R 777 backend/bootstrap/cache backend/storage
 ```
 
 Dev:
@@ -25,6 +28,7 @@ cp .env.dev.example .env.dev
 cp .env.db.example .env.db
 cp .env.dev .env
 docker compose up -d --build
+
 ```
 
 Prod:
